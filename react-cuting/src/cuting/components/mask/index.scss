@@ -1,7 +1,7 @@
 .mask {
   width: calc(100% - 40px);
   height: calc(100% - 40px);
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, .6);
   position: absolute;
   top: 20px;
   left: 20px;
@@ -21,11 +21,11 @@
     .move {
       content: "";
       position: absolute;
-      bottom: -1%;
-      right: -1%;
+      bottom: -10px;
+      right: -10px;
       background-color: #1588f5;
-      width: 2%;
-      height: 2%;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       cursor: se-resize;
     }
@@ -37,12 +37,18 @@
       height: 33.33%;
       &:nth-child(3n+1) {
         border-left: 1px solid #1588f5;
+        border-right: none;
       }
       &:nth-child(3n) {
         border-right: 1px solid #1588f5;
+        border-left: none;
       }
       &:nth-child(1),&:nth-child(2), &:nth-child(3) {
         border-top: 1px solid #1588f5;
+        border-bottom: none;
+      }
+      &:nth-child(4),&:nth-child(5), &:nth-child(6) {
+        border-bottom: none;
       }
       &:nth-child(7),&:nth-child(8), &:nth-child(9) {
         border-bottom: 1px solid #1588f5;

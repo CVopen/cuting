@@ -35,7 +35,6 @@ export const drawBg = (size, w, h, ctx) => {
       [ color1, color2 ] = [color2 , color1 ]
       drawRect(width * size, index * size, patchW, size, color1, ctx)
     }
-
     if (ctx.getImageData(height * size - size, 1, 1, 1).data[0] === 103) {
       color2 = '#7b7b7b'
       color1 = '#676767'

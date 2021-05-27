@@ -9,7 +9,8 @@ import { drawBg, positionImg } from '../../../_utils/draw'
 import Mask from '../mask/index'
 
 const CanvasCom = (props, ref) => {
-  const { size, src, scale } = props
+  // const { size, src, scale } = props
+  const { size, src } = props
   let canvas
   const [ canvasImg, setSrc ] = useState('')
   const [ maskSize, setMaskSize ] = useState({})
@@ -23,7 +24,6 @@ const CanvasCom = (props, ref) => {
       a.click();
     }
   }));
-
 
   const init = () => {
     const reader = new FileReader()
@@ -44,11 +44,13 @@ const CanvasCom = (props, ref) => {
   return (
     <>
       <canvas width={size.width} height={size.height} />
-      <Mask 
-        canvasImg={canvasImg}
-        maskSize={maskSize}
-        setMaskSize={setMaskSize}
-      />
+      {
+        Object.getOwnPropertyNames(maskSize).length && <Mask 
+          canvasImg={canvasImg}
+          maskSize={maskSize}
+          setMaskSize={setMaskSize}
+        />
+      }
     </>
   )
 }
