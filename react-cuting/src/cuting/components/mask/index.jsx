@@ -7,10 +7,9 @@ import {
 import './index.scss'
 export default function CanvasCom(props){
   const { maskSize, canvasImg, setMaskSize } = props
-  console.log(maskSize);
   const maskCom = useRef()
 
-  const [ maskPosition ] = useState({x1: 0, y1: 0})
+  const [ maskPosition, changePosition ] = useState({x: 0, y: 0})
 
   useEffect(() => {
     maskCom.current.style.width = maskSize.w + 'px'
@@ -18,57 +17,40 @@ export default function CanvasCom(props){
     maskCom.current.style.top = maskSize.y + 'px'
     maskCom.current.style.left = maskSize.x + 'px'
     maskCom.current.style.backgroundPosition = `-${maskSize.x}px -${maskSize.y}px`
-    setMaskSize(Object.assign(
-      maskSize, 
-      {
-        dragW: maskSize.w, 
-        dragH: maskSize.h
-      }
-    ))
   }, [])
 
-  // 裁切框控制
-  const changeMaskSize = e => {
-    const w = (maskSize.dragW ? maskSize.dragW : maskSize.w) - (maskPosition.x1 - e.x)
-    const h = (maskSize.dragH ? maskSize.dragH : maskSize.h) - (maskPosition.y1 - e.y)
-    if (maskSize.w / 10 <= w <= maskSize.w) {
-      maskCom.current.style.width = w + 'px'
+  const movehanldeDrag = e => {
+    e.stopPropagation();
+    let w = (maskSize.dragW ? maskSize.dragW : maskSize.w) - (maskPosition.x - e.clientX)
+    let h = (maskSize.dragH ? maskSize.dragH : maskSize.h) - (maskPosition.y - e.clientY)
+    if (w > maskSize.w) {
+      w = maskSize.w
     }
-    if (maskSize.h / 10 <= h <= maskSize.h) {
-      maskCom.current.style.height = h + 'px'
+    if (h > maskSize.h) {
+      h = maskSize.h
     }
+    maskCom.current.style.width = w + 'px'
+    maskCom.current.style.height = h + 'px'
+  }
+
+  const movehanleDragEnd = e => {
+    e.stopPropagation();
+    setMaskSize(Object.assign(maskSize, {
+      dragW: parseInt(maskCom.current.style.width),
+      dragH: parseInt(maskCom.current.style.height)
+    }))
   }
 
   const moveDown = e => {
-    console.log('moveDown');
+    e.stopPropagation();
+    changePosition({x: e.clientX, y: e.clientY})
+  }
+
+  const maskDown = e => {
     e.stopPropagation();
     maskPosition.x1 = e.clientX
     maskPosition.y1 = e.clientY
-    e.target.addEventListener('mousemove', changeMaskSize)
-  }
-
-  const moveUp = e => {
-    setMaskSize(Object.assign(
-      maskSize, 
-      {
-        dragW: parseInt(maskCom.current.style.width), 
-        dragH: parseInt(maskCom.current.style.height)
-      }
-    ))
-    e.target.removeEventListener("mousemove", changeMaskSize)
-    e.target.click()
-  }
-
-  const moveOut = e => {
-    setMaskSize(Object.assign(
-      maskSize, 
-      {
-        dragW: parseInt(maskCom.current.style.width), 
-        dragH: parseInt(maskCom.current.style.height)
-      }
-    ))
-    e.target.removeEventListener("mousemove", changeMaskSize)
-    e.target.click()
+    e.target.addEventListener('mousemove', moveMask)
   }
 
   const moveMask = e => {
@@ -92,14 +74,6 @@ export default function CanvasCom(props){
     maskCom.current.style.top = y + 'px'
     maskCom.current.style.backgroundPosition = `-${x}px -${y}px`
   }
-
-  const maskDown = e => {
-    console.log('maskDown');
-    maskPosition.x1 = e.clientX
-    maskPosition.y1 = e.clientY
-    e.target.addEventListener('mousemove', moveMask)
-  }
-
   const maskUp = e => {
     setMaskSize(Object.assign(
       maskSize, 
@@ -109,7 +83,6 @@ export default function CanvasCom(props){
       }
     ))
     e.target.removeEventListener("mousemove", moveMask)
-    e.target.click()
   }
 
   const maskOut = e => {
@@ -121,7 +94,6 @@ export default function CanvasCom(props){
       }
     ))
     e.target.removeEventListener("mousemove", moveMask)
-    e.target.click()
   }
 
   return (
@@ -129,11 +101,10 @@ export default function CanvasCom(props){
       <div 
         className="mask-img" 
         ref={maskCom}
-        style={{ backgroundImage: `url(${canvasImg})` }}
+        style={{backgroundImage: `url(${canvasImg})`}}
         onMouseDown={maskDown}
         onMouseUp={maskUp}
         onMouseOut={maskOut}
-        onClick={() => {}}
       >
         <span></span>
         <span></span>
@@ -146,10 +117,10 @@ export default function CanvasCom(props){
         <span></span>
         <div
           className="move" 
+          draggable="true"
+          onDrag={movehanldeDrag}
           onMouseDown={moveDown}
-          onMouseUp={moveUp}
-          onMouseOut={moveOut}
-          onClick={() => {}}
+          onDragEnd={movehanleDragEnd}
         />
       </div>
     </div>

@@ -23,25 +23,27 @@ export const drawBg = (size, w, h, ctx) => {
   
   // 补齐剩下背景
   if (w > width * size || h > height * size) {
-    if (ctx.getImageData(width * size - size, 1, 1, 1).data[0] === 103) {
-      color2 = '#7b7b7b'
-      color1 = '#676767'
-    } else {
-      color1 = '#7b7b7b'
-      color2 = '#676767'
-    }
+    // if (ctx.getImageData(width * size - size, 1, 1, 1).data[0] === 103) {
+    //   color2 = '#7b7b7b'
+    //   color1 = '#676767'
+    // } else {
+    //   color1 = '#7b7b7b'
+    //   color2 = '#676767'
+    // }
+    [ color1, color2 ] = [color2 , color1 ]
     const patchW = w - width * size
     for (let index = 0; index < height; index++) {
       [ color1, color2 ] = [color2 , color1 ]
       drawRect(width * size, index * size, patchW, size, color1, ctx)
     }
-    if (ctx.getImageData(height * size - size, 1, 1, 1).data[0] === 103) {
-      color2 = '#7b7b7b'
-      color1 = '#676767'
-    } else {
-      color1 = '#7b7b7b'
-      color2 = '#676767'
-    }
+    // if (ctx.getImageData(height * size - size, 1, 1, 1).data[0] === 103) {
+    //   color2 = '#7b7b7b'
+    //   color1 = '#676767'
+    // } else {
+    //   color1 = '#7b7b7b'
+    //   color2 = '#676767'
+    // }
+    // [ color1, color2 ] = [color2 , color1 ]
     const patchH = h - height * size
     for (let index = 0; index < width; index++) {
       [ color1, color2 ] = [color2 , color1 ]
