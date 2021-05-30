@@ -1,4 +1,6 @@
-.cropper {
+import styled from 'styled-components'
+
+const CutingCom = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -42,4 +44,7 @@
       border-radius: 10px;
     }
   }
+`
+export {
+  CutingCom
 }

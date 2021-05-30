@@ -4,10 +4,10 @@ import {
   useState, 
   useRef 
 } from 'react'
-import './index.scss'
-import CanvasCom from './components/canvas/index'
+import { CutingCom } from './css'
+import CanvasCom from '../components/canvas/index'
 
-export default function Center (props) { 
+export default function Cuting (props) { 
   const [ src, setSrc ] = useState('')
   const [ size, setSize ] = useState(null)
   const childRef = useRef()
@@ -36,7 +36,7 @@ export default function Center (props) {
   }
 
   return (
-    <div className='cropper'>
+    <CutingCom>
       <div className='container'>
         {
           src ?
@@ -55,6 +55,6 @@ export default function Center (props) {
       <div className="btn" onClick={() => setSrc('')}>清空</div>
       <div className="btn" onClick={importImg}>导出</div>
       <div className="btn" onClick={hanldClick}>触发canvas</div>
-    </div>
+    </CutingCom>
   )
 }

@@ -1,4 +1,6 @@
-.mask {
+import styled from 'styled-components'
+
+const MaskCom = styled.div`
   width: calc(100% - 40px);
   height: calc(100% - 40px);
   background-color: rgba(0, 0, 0, .6);
@@ -55,7 +57,9 @@
       &:nth-child(7),&:nth-child(8), &:nth-child(9) {
         border-bottom: 1px solid #1588f5;
       }
-      
     }
   }
+`
+export {
+  MaskCom
 }

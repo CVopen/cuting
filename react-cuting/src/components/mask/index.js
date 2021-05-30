@@ -4,20 +4,22 @@ import {
   useRef,
   useEffect
 } from 'react'
-import './index.scss'
-export default function CanvasCom(props){
+import { MaskCom } from './css'
+export default function Mask(props){
   const { maskSize, canvasImg, setMaskSize } = props
   const maskCom = useRef()
 
   const [ maskPosition, changePosition ] = useState({x: 0, y: 0})
 
-  useEffect(() => {
+  useEffect(() => init(), [])
+
+  const init = () => {
     maskCom.current.style.width = maskSize.w + 'px'
     maskCom.current.style.height = maskSize.h + 'px'
     maskCom.current.style.top = maskSize.y + 'px'
     maskCom.current.style.left = maskSize.x + 'px'
     maskCom.current.style.backgroundPosition = `-${maskSize.x}px -${maskSize.y}px`
-  }, [])
+  }
 
   const movehanldeDrag = e => {
     e.stopPropagation();
@@ -28,6 +30,12 @@ export default function CanvasCom(props){
     }
     if (h > maskSize.h) {
       h = maskSize.h
+    }
+    if (maskSize.w + maskSize.x < maskSize.dragX + w) {
+      w = maskSize.w + maskSize.x - maskSize.dragX
+    }
+    if (maskSize.h + maskSize.y < maskSize.dragY + h) {
+      h = maskSize.h + maskSize.y - maskSize.dragY
     }
     maskCom.current.style.width = w + 'px'
     maskCom.current.style.height = h + 'px'
@@ -42,6 +50,7 @@ export default function CanvasCom(props){
   }
 
   const moveDown = e => {
+    console.log(maskSize);
     e.stopPropagation();
     changePosition({x: e.clientX, y: e.clientY})
   }
@@ -74,6 +83,7 @@ export default function CanvasCom(props){
     maskCom.current.style.top = y + 'px'
     maskCom.current.style.backgroundPosition = `-${x}px -${y}px`
   }
+  
   const maskUp = e => {
     setMaskSize(Object.assign(
       maskSize, 
@@ -97,7 +107,7 @@ export default function CanvasCom(props){
   }
 
   return (
-    <div className="mask">
+    <MaskCom>
       <div 
         className="mask-img" 
         ref={maskCom}
@@ -123,6 +133,6 @@ export default function CanvasCom(props){
           onDragEnd={movehanleDragEnd}
         />
       </div>
-    </div>
+    </MaskCom>
   )
 }

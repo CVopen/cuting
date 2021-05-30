@@ -5,10 +5,11 @@ import {
   useImperativeHandle, 
   forwardRef 
 } from 'react'
-import { drawBg, positionImg } from '../../../_utils/draw'
+import { positionImg } from '../../utils/draw'
 import Mask from '../mask/index'
+import { CanvasCom } from './css'
 
-const CanvasCom = (props, ref) => {
+const Canvas = (props, ref) => {
   // const { size, src, scale } = props
   const { size, src } = props
   let canvas
@@ -35,14 +36,13 @@ const CanvasCom = (props, ref) => {
         const { x, y, w, h } = positionImg(size, img)
         setMaskSize({ x, y, w, h })
         canvas = document.querySelector('canvas')
-        drawBg(10, size.width, size.height, canvas.getContext("2d"))
         canvas.getContext("2d").drawImage(img, x, y, w, h)
         setSrc(canvas.toDataURL())
       }
     }
   }
   return (
-    <>
+    <CanvasCom style={{width: size.width + 'px', height: size.height + 'px'}}>
       <canvas width={size.width} height={size.height} />
       {
         Object.getOwnPropertyNames(maskSize).length && <Mask 
@@ -51,8 +51,8 @@ const CanvasCom = (props, ref) => {
           setMaskSize={setMaskSize}
         />
       }
-    </>
+    </CanvasCom>
   )
 }
 
-export default forwardRef(CanvasCom)
+export default forwardRef(Canvas)
