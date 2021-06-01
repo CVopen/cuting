@@ -3,7 +3,6 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var react = require('react');
-var React = require('react');
 var styled = require('styled-components');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -116,6 +115,52 @@ var positionImg = function positionImg(size, img) {
     h: h
   };
 };
+/**
+ * @param size 图片位置
+ * @param importSize 裁切框位置
+ * @param scale 图片比例
+ * @param { dragW, dragH } 裁切框尺寸
+ */
+
+var positionMask = function positionMask(size, importSize, scale) {
+  if (importSize) {
+    // 如果传入导出文件大小 就按照导出文件大小的比例
+    return calcImportSize();
+  }
+
+  if (scale) {
+    // 如果传入了导出文件比例 就按照导出文件比例
+    return calcScale();
+  } // 如果没有就按照截取部分的比例导出等比例大小的图片
+
+};
+/**
+ * @param size 图片位置
+ * @param importSize 裁切框位置
+ * @param { dragW, dragH, imgScale } 裁切框尺寸
+ */
+
+var calcImportSize = function calcImportSize(size, importSize) {
+  return {
+    dragW: dragW,
+    dragH: dragH,
+    imgScale: imgScale
+  };
+};
+/**
+ * @param size 图片位置
+ * @param scale 裁切框比例
+ * @param { dragW, dragH, imgScale } 裁切框尺寸
+ */
+
+
+var calcScale = function calcScale(size, scale) {
+  return {
+    dragW: dragW,
+    dragH: dragH,
+    imgScale: imgScale
+  };
+};
 
 var _templateObject$1;
 var MaskCom = styled__default['default'].div(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["\n  width: calc(100% - 40px);\n  height: calc(100% - 40px);\n  background-color: rgba(0, 0, 0, .6);\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  .mask-img {\n    display: flex;\n    flex-wrap: wrap;\n    position: absolute;\n    cursor: move;\n    top: 0;\n    left: 0;\n    &::after {\n      content: \"+\";\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      color: #fff;\n    }\n    .move {\n      content: \"\";\n      position: absolute;\n      bottom: -10px;\n      right: -10px;\n      background-color: #1588f5;\n      width: 20px;\n      height: 20px;\n      border-radius: 50%;\n      cursor: se-resize !important;\n    }\n    span {\n      box-sizing: border-box;\n      border-radius: 0;\n      width: 33.33%;\n      display: block;\n      height: 33.33%;\n      &:nth-child(3n+1) {\n        border-left: 1px solid #1588f5;\n        border-right: none;\n      }\n      &:nth-child(3n) {\n        border-right: 1px solid #1588f5;\n        border-left: none;\n      }\n      &:nth-child(1),&:nth-child(2), &:nth-child(3) {\n        border-top: 1px solid #1588f5;\n        border-bottom: none;\n      }\n      &:nth-child(4),&:nth-child(5), &:nth-child(6) {\n        border-bottom: none;\n      }\n      &:nth-child(7),&:nth-child(8), &:nth-child(9) {\n        border-bottom: 1px solid #1588f5;\n      }\n    }\n  }\n"])));
@@ -139,8 +184,9 @@ function Mask(props) {
   }, []);
 
   var init = function init() {
-    maskCom.current.style.width = maskSize.w + 'px';
-    maskCom.current.style.height = maskSize.h + 'px';
+    maskCom.current.style.width = (maskSize.dragW ? maskSize.dragW : maskSize.w) + 'px';
+    maskCom.current.style.height = (maskSize.dragH ? maskSize.dragH : maskSize.h) + 'px';
+    console.log(maskSize, maskSize.dragW, maskSize.dragH, maskCom.current.style.width);
     maskCom.current.style.top = maskSize.y + 'px';
     maskCom.current.style.left = maskSize.x + 'px';
     maskCom.current.style.backgroundPosition = "-".concat(maskSize.x, "px -").concat(maskSize.y, "px");
@@ -255,12 +301,13 @@ function Mask(props) {
 }
 
 var _templateObject;
-var CanvasCom$1 = styled__default['default'].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  color: hotpink;\n  font-size: 14px;\n  background-color: #ccc;\n\n  width: 100%;\n  height: 100%;\n  background-color: #7b7b7b;\n  background-image: linear-gradient(\n      45deg,\n      #676767 25%,\n      transparent 25%,\n      transparent 75%,\n      #676767 75%\n    ),\n    linear-gradient(\n      45deg,\n      #676767 25%,\n      transparent 25%,\n      transparent 75%,\n      #676767 75%\n    );\n  background-size: 16px 16px;\n  background-position: 0 0, 8px 8px;\n"])));
+var CanvasCom$1 = styled__default['default'].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  font-size: 14px;\n  width: 100%;\n  height: 100%;\n  background-color: #7b7b7b;\n  background-image: linear-gradient(\n      45deg,\n      #676767 25%,\n      transparent 25%,\n      transparent 75%,\n      #676767 75%\n    ),\n    linear-gradient(\n      45deg,\n      #676767 25%,\n      transparent 25%,\n      transparent 75%,\n      #676767 75%\n    );\n  background-size: 16px 16px;\n  background-position: 0 0, 8px 8px;\n"])));
 
 var Canvas = function Canvas(props, ref) {
-  // const { size, src, scale } = props
   var size = props.size,
-      src = props.src;
+      src = props.src,
+      scale = props.scale,
+      importSize = props.importSize;
   var canvas;
 
   var _useState = react.useState(''),
@@ -279,10 +326,11 @@ var Canvas = function Canvas(props, ref) {
   react.useImperativeHandle(ref, function () {
     return {
       importImg: function importImg() {
-        var a = document.createElement("a");
-        a.href = canvasImg;
-        a.download = '123.png';
-        a.click();
+        console.log(document.querySelector('canvas').width);
+        console.log(scale, importSize); // const a = document.createElement("a");
+        // a.href = canvasImg
+        // a.download = '123.png';
+        // a.click();
       }
     };
   });
@@ -302,15 +350,24 @@ var Canvas = function Canvas(props, ref) {
             w = _positionImg.w,
             h = _positionImg.h;
 
+        canvas = document.querySelector('canvas');
+        canvas.getContext("2d").drawImage(img, x, y, w, h);
+        setSrc(canvas.toDataURL());
+        console.log(importSize);
         setMaskSize({
           x: x,
           y: y,
           w: w,
-          h: h
+          h: h,
+          dragW: importSize[0],
+          dragH: importSize[1]
         });
-        canvas = document.querySelector('canvas');
-        canvas.getContext("2d").drawImage(img, x, y, w, h);
-        setSrc(canvas.toDataURL());
+        positionMask({
+          x: x,
+          y: y,
+          w: w,
+          h: h
+        }, importSize, scale);
       };
     };
   };
@@ -357,11 +414,8 @@ function Cuting(props) {
     setSrc(e.target.files[0]);
   };
 
-  var importImg = function importImg(src) {
-    var a = document.createElement("a");
-    a.href = src;
-    a.download = '123.png';
-    a.click();
+  var importImg = function importImg() {
+    console.log('cuting');
   };
 
   var hanldClick = function hanldClick() {
@@ -372,9 +426,10 @@ function Cuting(props) {
     className: "container"
   }, src ? /*#__PURE__*/React.createElement(CanvasCom, {
     size: size,
+    importSize: props.size.split(','),
+    scale: props.scale.split(','),
     src: src,
-    ref: childRef,
-    scale: '1:1'
+    ref: childRef
   }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
     type: "file",
     onChange: change

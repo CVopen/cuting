@@ -23,3 +23,39 @@ export const positionImg = (size, img) => {
   }
   return { x, y, w, h }
 }
+
+/**
+ * @param size 图片位置
+ * @param importSize 裁切框位置
+ * @param scale 图片比例
+ * @param { dragW, dragH } 裁切框尺寸
+ */
+export const positionMask = (size, importSize, scale) => {
+  if (importSize) {
+    // 如果传入导出文件大小 就按照导出文件大小的比例
+    return calcImportSize(size, importSize)
+  }
+  if (scale) {
+    // 如果传入了导出文件比例 就按照导出文件比例
+    return calcScale(size, scale)
+  }
+  // 如果没有就按照截取部分的比例导出等比例大小的图片
+}
+
+/**
+ * @param size 图片位置
+ * @param importSize 裁切框位置
+ * @param { dragW, dragH, imgScale } 裁切框尺寸
+ */
+const calcImportSize = (size, importSize) => {
+  return { dragW, dragH, imgScale }
+}
+
+/**
+ * @param size 图片位置
+ * @param scale 裁切框比例
+ * @param { dragW, dragH, imgScale } 裁切框尺寸
+ */
+const calcScale = (size, scale) => {
+  return { dragW, dragH, imgScale }
+}

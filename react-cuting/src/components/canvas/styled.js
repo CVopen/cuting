@@ -1,10 +1,7 @@
 import styled from 'styled-components'
 
 const CanvasCom = styled.div`
-  color: hotpink;
   font-size: 14px;
-  background-color: #ccc;
-
   width: 100%;
   height: 100%;
   background-color: #7b7b7b;

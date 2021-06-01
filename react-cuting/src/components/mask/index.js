@@ -4,7 +4,7 @@ import {
   useRef,
   useEffect
 } from 'react'
-import { MaskCom } from './css'
+import { MaskCom } from './styled'
 export default function Mask(props){
   const { maskSize, canvasImg, setMaskSize } = props
   const maskCom = useRef()
@@ -14,8 +14,9 @@ export default function Mask(props){
   useEffect(() => init(), [])
 
   const init = () => {
-    maskCom.current.style.width = maskSize.w + 'px'
-    maskCom.current.style.height = maskSize.h + 'px'
+    maskCom.current.style.width = (maskSize.dragW ? maskSize.dragW : maskSize.w) + 'px'
+    maskCom.current.style.height = (maskSize.dragH ? maskSize.dragH : maskSize.h) + 'px'
+    console.log(maskSize, maskSize.dragW, maskSize.dragH, maskCom.current.style.width)
     maskCom.current.style.top = maskSize.y + 'px'
     maskCom.current.style.left = maskSize.x + 'px'
     maskCom.current.style.backgroundPosition = `-${maskSize.x}px -${maskSize.y}px`

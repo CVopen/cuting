@@ -4,7 +4,7 @@ import {
   useState, 
   useRef 
 } from 'react'
-import { CutingCom } from './css'
+import { CutingCom } from './styled'
 import CanvasCom from '../components/canvas/index'
 
 export default function Cuting (props) { 
@@ -24,11 +24,8 @@ export default function Cuting (props) {
     setSrc(e.target.files[0])
   }
 
-  const importImg = (src) => {
-    const a = document.createElement("a");
-    a.href = src
-    a.download = '123.png';
-    a.click();
+  const importImg = () => {
+    console.log('cuting')
   }
 
   const hanldClick = () => {
@@ -42,9 +39,10 @@ export default function Cuting (props) {
           src ?
           <CanvasCom 
             size={size}
+            importSize={props.size.split(',')}
+            scale={props.scale.split(',')}
             src={src}
             ref={childRef}
-            scale={'1:1'}
           /> :
           <>
             <input type="file" onChange={change} />

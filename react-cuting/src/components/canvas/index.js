@@ -5,13 +5,15 @@ import {
   useImperativeHandle, 
   forwardRef 
 } from 'react'
-import { positionImg } from '../../utils/draw'
+import { 
+  positionImg,
+  positionMask 
+} from '../../utils/draw'
 import Mask from '../mask/index'
-import { CanvasCom } from './css'
+import { CanvasCom } from './styled'
 
 const Canvas = (props, ref) => {
-  // const { size, src, scale } = props
-  const { size, src } = props
+  const { size, src, scale, importSize } = props
   let canvas
   const [ canvasImg, setSrc ] = useState('')
   const [ maskSize, setMaskSize ] = useState({})
@@ -19,10 +21,12 @@ const Canvas = (props, ref) => {
 
   useImperativeHandle(ref, () => ({
     importImg: () => {
-      const a = document.createElement("a");
-      a.href = canvasImg
-      a.download = '123.png';
-      a.click();
+      console.log(document.querySelector('canvas').width)
+      console.log(scale, importSize)
+      // const a = document.createElement("a");
+      // a.href = canvasImg
+      // a.download = '123.png';
+      // a.click();
     }
   }));
 
@@ -34,13 +38,16 @@ const Canvas = (props, ref) => {
       img.src = e.target.result
       img.onload = function () {
         const { x, y, w, h } = positionImg(size, img)
-        setMaskSize({ x, y, w, h })
         canvas = document.querySelector('canvas')
         canvas.getContext("2d").drawImage(img, x, y, w, h)
         setSrc(canvas.toDataURL())
+        console.log(importSize)
+        setMaskSize({ x, y, w, h, dragW: importSize[0], dragH: importSize[1] })
+        positionMask({ x, y, w, h }, importSize, scale)
       }
     }
   }
+
   return (
     <CanvasCom style={{width: size.width + 'px', height: size.height + 'px'}}>
       <canvas width={size.width} height={size.height} />
