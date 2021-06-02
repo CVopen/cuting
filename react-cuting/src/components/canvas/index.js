@@ -13,7 +13,7 @@ import Mask from '../mask/index'
 import { CanvasCom } from './styled'
 
 const Canvas = (props, ref) => {
-  const { size, src, scale, importSize } = props
+  const { size, src, enlarge, importSize } = props
   let canvas
   const [ canvasImg, setSrc ] = useState('')
   const [ maskSize, setMaskSize ] = useState({})
@@ -22,7 +22,7 @@ const Canvas = (props, ref) => {
   useImperativeHandle(ref, () => ({
     importImg: () => {
       console.log(document.querySelector('canvas').width)
-      console.log(scale, importSize)
+      console.log(enlarge, importSize)
       // const a = document.createElement("a");
       // a.href = canvasImg
       // a.download = '123.png';
@@ -42,8 +42,9 @@ const Canvas = (props, ref) => {
         canvas.getContext("2d").drawImage(img, x, y, w, h)
         setSrc(canvas.toDataURL())
         console.log(importSize)
-        setMaskSize({ x, y, w, h, dragW: importSize[0], dragH: importSize[1] })
-        positionMask({ x, y, w, h }, importSize, scale)
+        // setMaskSize({ x, y, w, h})
+        
+        setMaskSize(positionMask({ x, y, w, h }, importSize))
       }
     }
   }

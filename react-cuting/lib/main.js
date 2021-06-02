@@ -3,6 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var react = require('react');
+var React = require('react');
 var styled = require('styled-components');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -118,52 +119,56 @@ var positionImg = function positionImg(size, img) {
 /**
  * @param size 图片位置
  * @param importSize 裁切框位置
- * @param scale 图片比例
- * @param { dragW, dragH } 裁切框尺寸
+ * @returns {
+ *  x,  canvas图片偏离左侧
+ *  y,  canvas图片偏离顶部
+ *  w,  canvas图片宽度
+ *  h,  canvas图片高度
+ *  dragX, 裁切框偏离左侧
+ *  dragY, 裁切框偏离顶部
+ *  dragW, 裁切框宽度
+ *  dragH, 裁切框高度
+ * } 遮罩大小
  */
 
-var positionMask = function positionMask(size, importSize, scale) {
-  if (importSize) {
-    // 如果传入导出文件大小 就按照导出文件大小的比例
-    return calcImportSize();
+var positionMask = function positionMask(size, importSize) {
+  if (!importSize) {
+    return Object.assign(size, {
+      dragW: size.w,
+      dragH: size.h,
+      dragX: size.x,
+      dragY: size.y
+    });
   }
 
-  if (scale) {
-    // 如果传入了导出文件比例 就按照导出文件比例
-    return calcScale();
-  } // 如果没有就按照截取部分的比例导出等比例大小的图片
+  if (size.w > importSize[0] || size.h > importSize[1]) {
+    size.dragW = importSize[0];
+    size.dragX = size.x + (size.w - importSize[0]) / 2;
+    size.dragH = importSize[1];
+    size.dragY = size.y + (size.h - importSize[1]) / 2;
+  }
 
-};
-/**
- * @param size 图片位置
- * @param importSize 裁切框位置
- * @param { dragW, dragH, imgScale } 裁切框尺寸
- */
+  if (size.w <= importSize[0]) {
+    size.dragW = size.w;
+    size.dragX = size.x;
+    size.dragH = importSize[1] * size.w / importSize[0];
+    size.dragY = size.y + (size.h - size.dragH) / 2;
+  }
 
-var calcImportSize = function calcImportSize(size, importSize) {
-  return {
-    dragW: dragW,
-    dragH: dragH,
-    imgScale: imgScale
-  };
-};
-/**
- * @param size 图片位置
- * @param scale 裁切框比例
- * @param { dragW, dragH, imgScale } 裁切框尺寸
- */
+  if (size.h <= importSize[1]) {
+    size.dragH = size.h;
+    size.dragW = size.h * importSize[0] / importSize[1];
+    size.dragX = size.x + (size.w - size.dragW) / 2;
+    size.dragY = size.y;
+  }
 
-
-var calcScale = function calcScale(size, scale) {
-  return {
-    dragW: dragW,
-    dragH: dragH,
-    imgScale: imgScale
-  };
+  size.dragX = parseInt(size.dragX);
+  size.dragY = parseInt(size.dragY);
+  return size;
 };
 
 var _templateObject$1;
-var MaskCom = styled__default['default'].div(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["\n  width: calc(100% - 40px);\n  height: calc(100% - 40px);\n  background-color: rgba(0, 0, 0, .6);\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  .mask-img {\n    display: flex;\n    flex-wrap: wrap;\n    position: absolute;\n    cursor: move;\n    top: 0;\n    left: 0;\n    &::after {\n      content: \"+\";\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      color: #fff;\n    }\n    .move {\n      content: \"\";\n      position: absolute;\n      bottom: -10px;\n      right: -10px;\n      background-color: #1588f5;\n      width: 20px;\n      height: 20px;\n      border-radius: 50%;\n      cursor: se-resize !important;\n    }\n    span {\n      box-sizing: border-box;\n      border-radius: 0;\n      width: 33.33%;\n      display: block;\n      height: 33.33%;\n      &:nth-child(3n+1) {\n        border-left: 1px solid #1588f5;\n        border-right: none;\n      }\n      &:nth-child(3n) {\n        border-right: 1px solid #1588f5;\n        border-left: none;\n      }\n      &:nth-child(1),&:nth-child(2), &:nth-child(3) {\n        border-top: 1px solid #1588f5;\n        border-bottom: none;\n      }\n      &:nth-child(4),&:nth-child(5), &:nth-child(6) {\n        border-bottom: none;\n      }\n      &:nth-child(7),&:nth-child(8), &:nth-child(9) {\n        border-bottom: 1px solid #1588f5;\n      }\n    }\n  }\n"])));
+var MaskCom = styled__default['default'].div(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["\n  width: calc(100% - 40px);\n  height: calc(100% - 40px);\n  background-color: rgba(0, 0, 0, .6);\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  .mask-img {\n    display: flex;\n    flex-wrap: wrap;\n    position: absolute;\n    cursor: move;\n    top: 0;\n    left: 0;\n    &::after {\n      content: \"+\";\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      color: #fff;\n    }\n    .move {\n      position: absolute;\n      /* bottom: -5px;\n      right: -5px; */\n      background-color: #1588f5;\n      width: 10px;\n      height: 10px;\n      border-radius: 50%;\n    }\n    span {\n      box-sizing: border-box;\n      border-radius: 0;\n      width: 33.33%;\n      display: block;\n      height: 33.33%;\n      &:nth-child(3n+1) {\n        border-left: 1px solid #1588f5;\n        border-right: none;\n      }\n      &:nth-child(3n) {\n        border-right: 1px solid #1588f5;\n        border-left: none;\n      }\n      &:nth-child(1),&:nth-child(2), &:nth-child(3) {\n        border-top: 1px solid #1588f5;\n        border-bottom: none;\n      }\n      &:nth-child(4),&:nth-child(5), &:nth-child(6) {\n        border-bottom: none;\n      }\n      &:nth-child(7),&:nth-child(8), &:nth-child(9) {\n        border-bottom: 1px solid #1588f5;\n      }\n    }\n  }\n"])));
 
 function Mask(props) {
   var maskSize = props.maskSize,
@@ -184,49 +189,58 @@ function Mask(props) {
   }, []);
 
   var init = function init() {
-    maskCom.current.style.width = (maskSize.dragW ? maskSize.dragW : maskSize.w) + 'px';
-    maskCom.current.style.height = (maskSize.dragH ? maskSize.dragH : maskSize.h) + 'px';
-    console.log(maskSize, maskSize.dragW, maskSize.dragH, maskCom.current.style.width);
-    maskCom.current.style.top = maskSize.y + 'px';
-    maskCom.current.style.left = maskSize.x + 'px';
-    maskCom.current.style.backgroundPosition = "-".concat(maskSize.x, "px -").concat(maskSize.y, "px");
+    maskCom.current.style.width = maskSize.dragW + 'px';
+    maskCom.current.style.height = maskSize.dragH + 'px';
+    maskCom.current.style.top = maskSize.dragY + 'px';
+    maskCom.current.style.left = maskSize.dragX + 'px';
+    maskCom.current.style.backgroundPosition = "-".concat(maskSize.dragX, "px -").concat(maskSize.dragY, "px");
   };
 
   var movehanldeDrag = function movehanldeDrag(e) {
     e.stopPropagation();
-    var w = (maskSize.dragW ? maskSize.dragW : maskSize.w) - (maskPosition.x - e.clientX);
-    var h = (maskSize.dragH ? maskSize.dragH : maskSize.h) - (maskPosition.y - e.clientY);
+    var dragW = maskSize.dragW,
+        dragH = maskSize.dragH,
+        dragX = maskSize.dragX,
+        dragY = maskSize.dragY;
+    dragW = dragW - (maskPosition.x - e.clientX);
+    dragH = dragH - (maskPosition.y - e.clientY);
 
-    if (w > maskSize.w) {
-      w = maskSize.w;
+    if (dragW > maskSize.w) {
+      dragW = maskSize.w;
     }
 
-    if (h > maskSize.h) {
-      h = maskSize.h;
+    if (dragH > maskSize.h) {
+      dragH = maskSize.h;
     }
 
-    if (maskSize.w + maskSize.x < maskSize.dragX + w) {
-      w = maskSize.w + maskSize.x - maskSize.dragX;
+    if (maskSize.w + maskSize.x < dragX + dragW) {
+      dragW = maskSize.w + maskSize.x - dragX;
     }
 
-    if (maskSize.h + maskSize.y < maskSize.dragY + h) {
-      h = maskSize.h + maskSize.y - maskSize.dragY;
+    if (maskSize.h + maskSize.y < dragY + dragH) {
+      dragH = maskSize.h + maskSize.y - dragY;
     }
 
-    maskCom.current.style.width = w + 'px';
-    maskCom.current.style.height = h + 'px';
+    switch (e.target.style.cursor) {
+          }
+
+    maskCom.current.style.width = dragW + 'px';
+    maskCom.current.style.height = dragH + 'px';
+    maskCom.current.style.left = dragX + 'px';
+    maskCom.current.style.top = dragY + 'px';
   };
 
   var movehanleDragEnd = function movehanleDragEnd(e) {
     e.stopPropagation();
     setMaskSize(Object.assign(maskSize, {
       dragW: parseInt(maskCom.current.style.width),
-      dragH: parseInt(maskCom.current.style.height)
+      dragH: parseInt(maskCom.current.style.height),
+      dragX: parseInt(maskCom.current.style.left),
+      dragY: parseInt(maskCom.current.style.top)
     }));
   };
 
   var moveDown = function moveDown(e) {
-    console.log(maskSize);
     e.stopPropagation();
     changePosition({
       x: e.clientX,
@@ -236,14 +250,14 @@ function Mask(props) {
 
   var maskDown = function maskDown(e) {
     e.stopPropagation();
-    maskPosition.x1 = e.clientX;
-    maskPosition.y1 = e.clientY;
-    e.target.addEventListener('mousemove', moveMask);
+    maskPosition.x = e.clientX;
+    maskPosition.y = e.clientY;
+    e.target.addEventListener('mousemove', maskMove);
   };
 
-  var moveMask = function moveMask(e) {
-    var x = (maskSize.dragX ? maskSize.dragX : maskSize.x) - (maskPosition.x1 - e.x);
-    var y = (maskSize.dragY ? maskSize.dragY : maskSize.y) - (maskPosition.y1 - e.y);
+  var maskMove = function maskMove(e) {
+    var x = maskSize.dragX - (maskPosition.x - e.x);
+    var y = maskSize.dragY - (maskPosition.y - e.y);
 
     if (maskSize.x > x) {
       x = maskSize.x;
@@ -271,7 +285,7 @@ function Mask(props) {
       dragX: parseInt(maskCom.current.style.left),
       dragY: parseInt(maskCom.current.style.top)
     }));
-    e.target.removeEventListener("mousemove", moveMask);
+    e.target.removeEventListener("mousemove", maskMove);
   };
 
   var maskOut = function maskOut(e) {
@@ -279,7 +293,50 @@ function Mask(props) {
       dragX: parseInt(maskCom.current.style.left),
       dragY: parseInt(maskCom.current.style.top)
     }));
-    e.target.removeEventListener("mousemove", moveMask);
+    e.target.removeEventListener("mousemove", maskMove);
+  };
+
+  var createdSpan = function createdSpan() {
+    var arr = [];
+
+    for (var i = 0; i < 9; i++) {
+      arr.push( /*#__PURE__*/React.createElement("span", {
+        key: i
+      }));
+    }
+
+    return arr;
+  };
+
+  var createdMoveList = function createdMoveList() {
+    var arr = [{
+      top: '-5px',
+      left: '-5px',
+      cursor: 'nw-resize'
+    }, {
+      top: '-5px',
+      right: '-5px',
+      cursor: 'ne-resize'
+    }, {
+      bottom: '-5px',
+      left: '-5px',
+      cursor: 'sw-resize'
+    }, {
+      bottom: '-5px',
+      right: '-5px',
+      cursor: 'se-resize'
+    }];
+    return arr.map(function (item, index) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: index,
+        className: "move",
+        draggable: "true",
+        style: item,
+        onDrag: movehanldeDrag,
+        onMouseDown: moveDown,
+        onDragEnd: movehanleDragEnd
+      });
+    });
   };
 
   return /*#__PURE__*/React.createElement(MaskCom, null, /*#__PURE__*/React.createElement("div", {
@@ -291,13 +348,7 @@ function Mask(props) {
     onMouseDown: maskDown,
     onMouseUp: maskUp,
     onMouseOut: maskOut
-  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("div", {
-    className: "move",
-    draggable: "true",
-    onDrag: movehanldeDrag,
-    onMouseDown: moveDown,
-    onDragEnd: movehanleDragEnd
-  })));
+  }, createdSpan(), createdMoveList()));
 }
 
 var _templateObject;
@@ -306,7 +357,7 @@ var CanvasCom$1 = styled__default['default'].div(_templateObject || (_templateOb
 var Canvas = function Canvas(props, ref) {
   var size = props.size,
       src = props.src,
-      scale = props.scale,
+      enlarge = props.enlarge,
       importSize = props.importSize;
   var canvas;
 
@@ -327,7 +378,7 @@ var Canvas = function Canvas(props, ref) {
     return {
       importImg: function importImg() {
         console.log(document.querySelector('canvas').width);
-        console.log(scale, importSize); // const a = document.createElement("a");
+        console.log(enlarge, importSize); // const a = document.createElement("a");
         // a.href = canvasImg
         // a.download = '123.png';
         // a.click();
@@ -353,21 +404,14 @@ var Canvas = function Canvas(props, ref) {
         canvas = document.querySelector('canvas');
         canvas.getContext("2d").drawImage(img, x, y, w, h);
         setSrc(canvas.toDataURL());
-        console.log(importSize);
-        setMaskSize({
-          x: x,
-          y: y,
-          w: w,
-          h: h,
-          dragW: importSize[0],
-          dragH: importSize[1]
-        });
-        positionMask({
+        console.log(importSize); // setMaskSize({ x, y, w, h})
+
+        setMaskSize(positionMask({
           x: x,
           y: y,
           w: w,
           h: h
-        }, importSize, scale);
+        }, importSize));
       };
     };
   };
@@ -427,7 +471,7 @@ function Cuting(props) {
   }, src ? /*#__PURE__*/React.createElement(CanvasCom, {
     size: size,
     importSize: props.size.split(','),
-    scale: props.scale.split(','),
+    scale: props.scale,
     src: src,
     ref: childRef
   }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {

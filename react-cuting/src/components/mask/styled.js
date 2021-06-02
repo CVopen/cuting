@@ -23,15 +23,13 @@ const MaskCom = styled.div`
       color: #fff;
     }
     .move {
-      content: "";
       position: absolute;
-      bottom: -10px;
-      right: -10px;
+      /* bottom: -5px;
+      right: -5px; */
       background-color: #1588f5;
-      width: 20px;
-      height: 20px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      cursor: se-resize !important;
     }
     span {
       box-sizing: border-box;

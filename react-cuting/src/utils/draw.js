@@ -27,35 +27,45 @@ export const positionImg = (size, img) => {
 /**
  * @param size 图片位置
  * @param importSize 裁切框位置
- * @param scale 图片比例
- * @param { dragW, dragH } 裁切框尺寸
+ * @returns {
+ *  x,  canvas图片偏离左侧
+ *  y,  canvas图片偏离顶部
+ *  w,  canvas图片宽度
+ *  h,  canvas图片高度
+ *  dragX, 裁切框偏离左侧
+ *  dragY, 裁切框偏离顶部
+ *  dragW, 裁切框宽度
+ *  dragH, 裁切框高度
+ * } 遮罩大小
  */
-export const positionMask = (size, importSize, scale) => {
-  if (importSize) {
-    // 如果传入导出文件大小 就按照导出文件大小的比例
-    return calcImportSize(size, importSize)
+export const positionMask = (size, importSize) => {
+  if (!importSize) {
+    return Object.assign(size, {
+      dragW: size.w,
+      dragH: size.h,
+      dragX: size.x,
+      dragY: size.y
+    })
   }
-  if (scale) {
-    // 如果传入了导出文件比例 就按照导出文件比例
-    return calcScale(size, scale)
+  if (size.w > importSize[0] || size.h > importSize[1]) {
+    size.dragW = importSize[0]
+    size.dragX = size.x + (size.w - importSize[0]) / 2
+    size.dragH = importSize[1]
+    size.dragY = size.y + (size.h - importSize[1]) / 2
   }
-  // 如果没有就按照截取部分的比例导出等比例大小的图片
-}
-
-/**
- * @param size 图片位置
- * @param importSize 裁切框位置
- * @param { dragW, dragH, imgScale } 裁切框尺寸
- */
-const calcImportSize = (size, importSize) => {
-  return { dragW, dragH, imgScale }
-}
-
-/**
- * @param size 图片位置
- * @param scale 裁切框比例
- * @param { dragW, dragH, imgScale } 裁切框尺寸
- */
-const calcScale = (size, scale) => {
-  return { dragW, dragH, imgScale }
+  if (size.w <= importSize[0]) {
+    size.dragW = size.w
+    size.dragX = size.x
+    size.dragH = importSize[1] * size.w / importSize[0]
+    size.dragY = size.y + (size.h - size.dragH) / 2
+  }
+  if (size.h <= importSize[1]) {
+    size.dragH = size.h
+    size.dragW = size.h * importSize[0] / importSize[1]
+    size.dragX = size.x + (size.w - size.dragW) / 2
+    size.dragY = size.y
+  }
+  size.dragX = parseInt(size.dragX)
+  size.dragY = parseInt(size.dragY)
+  return size
 }

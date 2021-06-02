@@ -40,7 +40,7 @@ export default function Cuting (props) {
           <CanvasCom 
             size={size}
             importSize={props.size.split(',')}
-            scale={props.scale.split(',')}
+            scale={props.scale}
             src={src}
             ref={childRef}
           /> :

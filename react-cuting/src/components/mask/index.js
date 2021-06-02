@@ -14,58 +14,77 @@ export default function Mask(props){
   useEffect(() => init(), [])
 
   const init = () => {
-    maskCom.current.style.width = (maskSize.dragW ? maskSize.dragW : maskSize.w) + 'px'
-    maskCom.current.style.height = (maskSize.dragH ? maskSize.dragH : maskSize.h) + 'px'
-    console.log(maskSize, maskSize.dragW, maskSize.dragH, maskCom.current.style.width)
-    maskCom.current.style.top = maskSize.y + 'px'
-    maskCom.current.style.left = maskSize.x + 'px'
-    maskCom.current.style.backgroundPosition = `-${maskSize.x}px -${maskSize.y}px`
+    maskCom.current.style.width = maskSize.dragW + 'px'
+    maskCom.current.style.height = maskSize.dragH + 'px'
+    maskCom.current.style.top = maskSize.dragY + 'px'
+    maskCom.current.style.left = maskSize.dragX + 'px'
+    maskCom.current.style.backgroundPosition = `-${maskSize.dragX}px -${maskSize.dragY}px`
   }
 
   const movehanldeDrag = e => {
     e.stopPropagation();
-    let w = (maskSize.dragW ? maskSize.dragW : maskSize.w) - (maskPosition.x - e.clientX)
-    let h = (maskSize.dragH ? maskSize.dragH : maskSize.h) - (maskPosition.y - e.clientY)
-    if (w > maskSize.w) {
-      w = maskSize.w
+    let { dragW, dragH, dragX, dragY } = maskSize
+    dragW = dragW - (maskPosition.x - e.clientX)
+    dragH = dragH - (maskPosition.y - e.clientY)
+
+    if (dragW > maskSize.w) {
+      dragW = maskSize.w
     }
-    if (h > maskSize.h) {
-      h = maskSize.h
+    if (dragH > maskSize.h) {
+      dragH = maskSize.h
     }
-    if (maskSize.w + maskSize.x < maskSize.dragX + w) {
-      w = maskSize.w + maskSize.x - maskSize.dragX
+    if (maskSize.w + maskSize.x < dragX + dragW) {
+      dragW = maskSize.w + maskSize.x - dragX
     }
-    if (maskSize.h + maskSize.y < maskSize.dragY + h) {
-      h = maskSize.h + maskSize.y - maskSize.dragY
+    if (maskSize.h + maskSize.y < dragY + dragH) {
+      dragH = maskSize.h + maskSize.y - dragY
     }
-    maskCom.current.style.width = w + 'px'
-    maskCom.current.style.height = h + 'px'
+    switch (e.target.style.cursor) {
+      case 'nw-resize':
+        
+        break;
+      case 'ne-resize':
+      
+        break;
+      case 'sw-resize':
+      
+        break;
+      case 'ne-resize':
+        break;
+      default:
+        break;
+    }
+    maskCom.current.style.width = dragW + 'px'
+    maskCom.current.style.height = dragH + 'px'
+    maskCom.current.style.left = dragX + 'px'
+    maskCom.current.style.top = dragY + 'px'
   }
 
   const movehanleDragEnd = e => {
     e.stopPropagation();
     setMaskSize(Object.assign(maskSize, {
       dragW: parseInt(maskCom.current.style.width),
-      dragH: parseInt(maskCom.current.style.height)
+      dragH: parseInt(maskCom.current.style.height),
+      dragX: parseInt(maskCom.current.style.left),
+      dragY: parseInt(maskCom.current.style.top)
     }))
   }
 
   const moveDown = e => {
-    console.log(maskSize);
     e.stopPropagation();
     changePosition({x: e.clientX, y: e.clientY})
   }
 
   const maskDown = e => {
     e.stopPropagation();
-    maskPosition.x1 = e.clientX
-    maskPosition.y1 = e.clientY
-    e.target.addEventListener('mousemove', moveMask)
+    maskPosition.x = e.clientX
+    maskPosition.y = e.clientY
+    e.target.addEventListener('mousemove', maskMove)
   }
 
-  const moveMask = e => {
-    let x = (maskSize.dragX ? maskSize.dragX : maskSize.x) - (maskPosition.x1 - e.x)
-    let y = (maskSize.dragY ? maskSize.dragY : maskSize.y) - (maskPosition.y1 - e.y)
+  const maskMove = e => {
+    let x = maskSize.dragX - (maskPosition.x - e.x)
+    let y = maskSize.dragY - (maskPosition.y - e.y)
     if (maskSize.x > x) {
       x = maskSize.x
     }
@@ -93,7 +112,7 @@ export default function Mask(props){
         dragY: parseInt(maskCom.current.style.top)
       }
     ))
-    e.target.removeEventListener("mousemove", moveMask)
+    e.target.removeEventListener("mousemove", maskMove)
   }
 
   const maskOut = e => {
@@ -104,7 +123,35 @@ export default function Mask(props){
         dragY: parseInt(maskCom.current.style.top)
       }
     ))
-    e.target.removeEventListener("mousemove", moveMask)
+    e.target.removeEventListener("mousemove", maskMove)
+  }
+
+  const createdSpan = () => {
+    const arr = []
+    for (let i = 0; i < 9; i++) {
+      arr.push(<span key={i}></span>)
+    }
+    return arr
+  }
+
+  const createdMoveList = () => {
+    const arr = [
+      {top: '-5px', left: '-5px', cursor: 'nw-resize'},
+      {top: '-5px', right: '-5px', cursor: 'ne-resize'},
+      {bottom: '-5px', left: '-5px', cursor: 'sw-resize'},
+      {bottom: '-5px', right: '-5px', cursor: 'se-resize'}
+    ]
+    return arr.map((item, index) => 
+      <div
+        key={index}
+        className="move" 
+        draggable="true"
+        style={item}
+        onDrag={movehanldeDrag}
+        onMouseDown={moveDown}
+        onDragEnd={movehanleDragEnd}
+      />
+    )
   }
 
   return (
@@ -117,22 +164,8 @@ export default function Mask(props){
         onMouseUp={maskUp}
         onMouseOut={maskOut}
       >
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <div
-          className="move" 
-          draggable="true"
-          onDrag={movehanldeDrag}
-          onMouseDown={moveDown}
-          onDragEnd={movehanleDragEnd}
-        />
+        { createdSpan() }
+        { createdMoveList() }
       </div>
     </MaskCom>
   )
