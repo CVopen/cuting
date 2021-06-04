@@ -200,7 +200,7 @@ function Mask(props) {
   }, []);
 
   var init = function init() {
-    changeSize([importSize[0] * 100 / importSize[1], 100]);
+    importSize && changeSize([importSize[0] * 100 / importSize[1], 100]);
     maskCom.current.style.width = maskSize.dragW + 'px';
     maskCom.current.style.height = maskSize.dragH + 'px';
     maskCom.current.style.top = maskSize.dragY + 'px';
@@ -332,12 +332,12 @@ function Mask(props) {
   var maskDown = function maskDown(e) {
     e.stopPropagation();
     maskPosition.x = e.clientX;
-    maskPosition.y = e.clientY; // e.target.addEventListener('mousemove', maskMove)
-
+    maskPosition.y = e.clientY;
     document.addEventListener('mousemove', maskMove);
   };
 
   var maskMove = function maskMove(e) {
+    e.preventDefault ? e.preventDefault() : e.returnValue = false;
     var x = maskSize.dragX - (maskPosition.x - e.x);
     var y = maskSize.dragY - (maskPosition.y - e.y);
 
@@ -360,10 +360,9 @@ function Mask(props) {
     maskCom.current.style.left = x + 'px';
     maskCom.current.style.top = y + 'px';
     maskCom.current.style.backgroundPosition = "-".concat(x, "px -").concat(y, "px");
-    return false;
   };
 
-  var maskUp = function maskUp(e) {
+  var maskUp = function maskUp() {
     setMaskSize(Object.assign(maskSize, {
       dragX: parseInt(maskCom.current.style.left),
       dragY: parseInt(maskCom.current.style.top)
@@ -371,7 +370,7 @@ function Mask(props) {
     document.removeEventListener("mousemove", maskMove);
   };
 
-  var maskOut = function maskOut(e) {
+  var maskOut = function maskOut() {
     setMaskSize(Object.assign(maskSize, {
       dragX: parseInt(maskCom.current.style.left),
       dragY: parseInt(maskCom.current.style.top)

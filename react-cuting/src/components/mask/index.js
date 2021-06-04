@@ -16,7 +16,7 @@ export default function Mask(props){
   useEffect(() => init(), [])
 
   const init = () => {
-    changeSize([importSize[0] * 100 / importSize[1], 100])
+    importSize && changeSize([importSize[0] * 100 / importSize[1], 100])
     maskCom.current.style.width = maskSize.dragW + 'px'
     maskCom.current.style.height = maskSize.dragH + 'px'
     maskCom.current.style.top = maskSize.dragY + 'px'
@@ -125,11 +125,11 @@ export default function Mask(props){
     e.stopPropagation();
     maskPosition.x = e.clientX
     maskPosition.y = e.clientY
-    // e.target.addEventListener('mousemove', maskMove)
     document.addEventListener('mousemove', maskMove)
   }
 
   const maskMove = e => {
+    e.preventDefault ? e.preventDefault() : e.returnValue = false
     let x = maskSize.dragX - (maskPosition.x - e.x)
     let y = maskSize.dragY - (maskPosition.y - e.y)
     if (maskSize.x > x) {
@@ -149,10 +149,9 @@ export default function Mask(props){
     maskCom.current.style.left = x + 'px'
     maskCom.current.style.top = y + 'px'
     maskCom.current.style.backgroundPosition = `-${x}px -${y}px`
-    return false
   }
   
-  const maskUp = e => {
+  const maskUp = () => {
     setMaskSize(Object.assign(
       maskSize, 
       {
@@ -163,7 +162,7 @@ export default function Mask(props){
     document.removeEventListener("mousemove", maskMove)
   }
 
-  const maskOut = e => {
+  const maskOut = () => {
     setMaskSize(Object.assign(
       maskSize, 
       {
