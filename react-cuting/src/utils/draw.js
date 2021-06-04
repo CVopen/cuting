@@ -39,6 +39,7 @@ export const positionImg = (size, img) => {
  * } 遮罩大小
  */
 export const positionMask = (size, importSize) => {
+  importSize = importSize.map(item => parseInt(item))
   if (!importSize) {
     return Object.assign(size, {
       dragW: size.w,

@@ -56,6 +56,7 @@ const Canvas = (props, ref) => {
         Object.getOwnPropertyNames(maskSize).length && <Mask 
           canvasImg={canvasImg}
           maskSize={maskSize}
+          importSize={importSize}
           setMaskSize={setMaskSize}
         />
       }
