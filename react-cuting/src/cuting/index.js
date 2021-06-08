@@ -9,7 +9,6 @@ import { verifyData } from '../utils/verify'
 import CanvasCom from '../components/canvas/index'
 
 export default function Cuting(props) { 
-  console.log(props.fixed, props)
   const [ src, setSrc ] = useState('')
   const [ size, setSize ] = useState(null)
   const [ data, changeData ] = useState(null)
@@ -21,7 +20,7 @@ export default function Cuting(props) {
       height: parseInt(getComputedStyle(container).height) - 40
     })
     initData()
-  }, [])
+  }, [props])
 
   const change = e => {
     console.log(e.target.files[0]);

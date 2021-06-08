@@ -19,7 +19,7 @@ export default function Mask(props){
   const [ maskPosition, changePosition ] = useState({x: 0, y: 0})
   const [ cutingSize, changeSize ] = useState([100, 100])
 
-  useEffect(() => init(), [])
+  useEffect(() => init(), [props])
 
   const init = () => {
     importSize && changeSize([importSize[0] * 100 / importSize[1], 100])

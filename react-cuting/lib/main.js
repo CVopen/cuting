@@ -2,8 +2,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var React = require('react');
 var react = require('react');
+var React = require('react');
 var styled = require('styled-components');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -133,9 +133,14 @@ var verifyData = function verifyData(data) {
     throw new Error('Fail: fixed value passed in is not Boolean');
   }
 
-  if (!data.enlarge) data.enlarge = 1;
-  if (!data.outputType) data.outputType = 'png';
-  if (data.changeSize === undefined) data.changeSize = true;
+  !data.enlarge && (data.enlarge = 1);
+  !data.outputType && (data.outputType = 'png');
+  data.changeSize === undefined && (data.changeSize = true);
+
+  if (data.fixed && data.canMoveBox === undefined) {
+    data.canMoveBox = true;
+  }
+
   return data;
 };
 
@@ -249,7 +254,7 @@ function Mask(props) {
 
   react.useEffect(function () {
     return init();
-  }, []);
+  }, [props]);
 
   var init = function init() {
     importSize && changeSize([importSize[0] * 100 / importSize[1], 100]);
@@ -595,8 +600,6 @@ var Canvas = function Canvas(props, ref) {
 var CanvasCom = /*#__PURE__*/react.forwardRef(Canvas);
 
 function Cuting(props) {
-  console.log(props.fixed, props);
-
   var _useState = react.useState(''),
       _useState2 = _slicedToArray(_useState, 2),
       src = _useState2[0],
@@ -620,7 +623,7 @@ function Cuting(props) {
       height: parseInt(getComputedStyle(container).height) - 40
     });
     initData();
-  }, []);
+  }, [props]);
 
   var change = function change(e) {
     console.log(e.target.files[0]);

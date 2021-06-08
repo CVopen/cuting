@@ -24,8 +24,11 @@ export const verifyData = (data) => {
   if (data.fixed !== undefined && typeof data.fixed !== 'boolean') {
     throw new Error('Fail: fixed value passed in is not Boolean')
   }
-  if (!data.enlarge) data.enlarge = 1
-  if (!data.outputType) data.outputType = 'png'
-  if (data.changeSize === undefined) data.changeSize = true
+  !data.enlarge && (data.enlarge = 1)
+  !data.outputType && (data.outputType = 'png')
+  data.changeSize === undefined && (data.changeSize = true)
+  if (data.fixed && data.canMoveBox === undefined) {
+    data.canMoveBox = true
+  }
   return data
 }
