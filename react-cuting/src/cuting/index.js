@@ -5,11 +5,14 @@ import {
   useRef 
 } from 'react'
 import { CutingCom } from './styled'
+import { verifyData } from '../utils/verify'
 import CanvasCom from '../components/canvas/index'
 
-export default function Cuting (props) { 
+export default function Cuting(props) { 
+  console.log(props.fixed, props)
   const [ src, setSrc ] = useState('')
   const [ size, setSize ] = useState(null)
+  const [ data, changeData ] = useState(null)
   const childRef = useRef()
   useEffect(() => {
     const container = document.querySelector('.container')
@@ -17,6 +20,7 @@ export default function Cuting (props) {
       width: parseInt(getComputedStyle(container).width) - 40,
       height: parseInt(getComputedStyle(container).height) - 40
     })
+    initData()
   }, [])
 
   const change = e => {
@@ -32,6 +36,20 @@ export default function Cuting (props) {
     childRef.current.importImg()
   }
 
+  const initData = () => {
+    changeData(verifyData({
+      size: props.size,
+      enlarge: props.enlarge,
+      canMoveBox: props.canMoveBox,
+      info: props.info,
+      fixed: props.fixed,
+      outputType: props.outputType,
+      src: props.src,
+      changeSize: props.changeSize
+    }))
+    props.src && setSrc(props.src)
+  }
+
   return (
     <CutingCom>
       <div className='container'>
@@ -39,10 +57,11 @@ export default function Cuting (props) {
           src ?
           <CanvasCom 
             size={size}
-            importSize={props.size.split(',')}
-            scale={props.scale}
+            importSize={data.size}
+            scale={data.scale}
             src={src}
             ref={childRef}
+            status={data}
           /> :
           <>
             <input type="file" onChange={change} />

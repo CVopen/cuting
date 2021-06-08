@@ -10,6 +10,22 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
@@ -84,6 +100,45 @@ function _nonIterableRest() {
 var _templateObject$2;
 var CutingCom = styled__default['default'].div(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  box-sizing: border-box;\n  padding: 10px;\n  .btn {\n    height: 50px;\n    background-color: red;\n  }\n  .container {\n    width: 100%;\n    height: 100%;\n    position: relative;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex-direction: column;\n    input {\n      opacity: 0;\n      width: 50%;\n      height: 80%;\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      &:hover ~ span {\n        border-color: red;\n        color: red;\n      }\n    }\n    span {\n      border: 1px dashed #ccc;\n      transition: all .4s;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 50%;\n      height: 80%;\n      font-size: 500%;\n      border-radius: 10px;\n    }\n  }\n"])));
 
+var verifyData = function verifyData(data) {
+  if (data.size && !Array.isArray(data.size)) {
+    throw new Error('Error: size value passed in is not an array');
+  }
+
+  if (data.enlarge && (typeof data.enlarge !== 'number' || data.enlarge < 1)) {
+    throw new Error('Fail: enlarge value passed in is a number and greater than 1');
+  }
+
+  if (data.canMoveBox !== undefined && typeof data.canMoveBox !== 'boolean') {
+    throw new Error('Fail: canMoveBox value passed in is not Boolean');
+  }
+
+  if (data.info !== undefined && typeof data.info !== 'boolean') {
+    throw new Error('Fail: info value passed in is not Boolean');
+  }
+
+  if (data.outputType !== undefined && typeof data.outputType !== 'string') {
+    throw new Error('fixed: outputType value passed in is not String');
+  }
+
+  if (data.src && typeof data.src !== 'string') {
+    throw new Error('Fail: src value passed in is not String');
+  }
+
+  if (data.changeSize !== undefined && typeof data.changeSize !== 'boolean') {
+    throw new Error('Fail: changeSize value passed in is not Boolean');
+  }
+
+  if (data.fixed !== undefined && typeof data.fixed !== 'boolean') {
+    throw new Error('Fail: fixed value passed in is not Boolean');
+  }
+
+  if (!data.enlarge) data.enlarge = 1;
+  if (!data.outputType) data.outputType = 'png';
+  if (data.changeSize === undefined) data.changeSize = true;
+  return data;
+};
+
 /**
  * 确定图片位置
  * @param size 画布大小
@@ -132,10 +187,6 @@ var positionImg = function positionImg(size, img) {
  */
 
 var positionMask = function positionMask(size, importSize) {
-  importSize = importSize.map(function (item) {
-    return parseInt(item);
-  });
-
   if (!importSize) {
     return Object.assign(size, {
       dragW: size.w,
@@ -178,7 +229,8 @@ function Mask(props) {
   var maskSize = props.maskSize,
       canvasImg = props.canvasImg,
       setMaskSize = props.setMaskSize,
-      importSize = props.importSize;
+      importSize = props.importSize,
+      status = props.status;
   var maskCom = react.useRef();
   var mask = react.useRef();
 
@@ -187,8 +239,8 @@ function Mask(props) {
     y: 0
   }),
       _useState2 = _slicedToArray(_useState, 2),
-      maskPosition = _useState2[0],
-      changePosition = _useState2[1];
+      maskPosition = _useState2[0];
+      _useState2[1];
 
   var _useState3 = react.useState([100, 100]),
       _useState4 = _slicedToArray(_useState3, 2),
@@ -252,8 +304,16 @@ function Mask(props) {
     return dragY;
   };
 
-  var movehanldeDrag = function movehanldeDrag(e) {
+  var moveDown = function moveDown(e) {
+    console.log('moveDown');
     e.stopPropagation();
+    maskPosition.x = e.clientX;
+    maskPosition.y = e.clientY;
+    document.addEventListener('mousemove', movehanldeDrag);
+  };
+
+  var movehanldeDrag = function movehanldeDrag(e) {
+    e.preventDefault ? e.preventDefault() : e.returnValue = false;
     if (!e.clientX) return;
     var dragW = maskSize.dragW,
         dragH = maskSize.dragH,
@@ -264,35 +324,41 @@ function Mask(props) {
       case 'nw-resize':
         dragW = validateW(dragW + (maskPosition.x - e.clientX));
         dragH = validateH(dragH + (maskPosition.y - e.clientY));
-        dragX = validateX(e.clientX - mask.current.offsetLeft - 10);
-        dragY = validateY(e.clientY - mask.current.offsetTop - 10);
+        dragX = validateX(dragX + maskSize.dragW - dragW);
+        dragY = validateY(dragY + maskSize.dragH - dragH);
         break;
 
       case 'ne-resize':
         dragW = validateW(dragW - (maskPosition.x - e.clientX));
         dragH = validateH(dragH + (maskPosition.y - e.clientY));
-        dragY = validateY(e.clientY - mask.current.offsetTop - 10);
+        dragY = validateY(dragY + maskSize.dragH - dragH);
         break;
 
       case 'sw-resize':
         dragW = validateW(dragW + (maskPosition.x - e.clientX));
         dragH = validateH(dragH - (maskPosition.y - e.clientY));
-        dragX = validateX(e.clientX - mask.current.offsetLeft - 10);
+        dragX = validateX(dragX + maskSize.dragW - dragW);
         break;
 
       case 'se-resize':
         dragW = validateW(dragW - (maskPosition.x - e.clientX));
-        dragH = validateH(dragH - (maskPosition.y - e.clientY));
+
+        if (status.fixed) {
+          dragH = validateH(cutingSize[1] * dragW / cutingSize[0]);
+        } else {
+          dragH = validateH(dragH - (maskPosition.y - e.clientY));
+        }
+
         break;
 
       case 's-resize':
         dragH = validateH(dragH + (maskPosition.y - e.clientY));
-        dragY = validateY(e.clientY - mask.current.offsetTop - 10);
+        dragY = validateY(dragY + maskSize.dragH - dragH);
         break;
 
       case 'e-resize':
         dragW = validateW(dragW + (maskPosition.x - e.clientX));
-        dragX = validateX(e.clientX - mask.current.offsetLeft - 10);
+        dragX = validateX(dragX + maskSize.dragW - dragW);
         break;
 
       case 'w-resize':
@@ -309,9 +375,10 @@ function Mask(props) {
     maskCom.current.style.left = dragX + 'px';
     maskCom.current.style.top = dragY + 'px';
     maskCom.current.style.backgroundPosition = "-".concat(dragX, "px -").concat(dragY, "px");
+    return false;
   };
 
-  var movehanleDragEnd = function movehanleDragEnd(e) {
+  var moveOut = function moveOut(e) {
     e.stopPropagation();
     setMaskSize(Object.assign(maskSize, {
       dragW: parseInt(maskCom.current.style.width),
@@ -319,17 +386,12 @@ function Mask(props) {
       dragX: parseInt(maskCom.current.style.left),
       dragY: parseInt(maskCom.current.style.top)
     }));
-  };
-
-  var moveDown = function moveDown(e) {
-    e.stopPropagation();
-    changePosition({
-      x: e.clientX,
-      y: e.clientY
-    });
+    document.removeEventListener("mousemove", movehanldeDrag);
   };
 
   var maskDown = function maskDown(e) {
+    console.log('maskDown');
+    if (!status.canMoveBox) return;
     e.stopPropagation();
     maskPosition.x = e.clientX;
     maskPosition.y = e.clientY;
@@ -360,14 +422,7 @@ function Mask(props) {
     maskCom.current.style.left = x + 'px';
     maskCom.current.style.top = y + 'px';
     maskCom.current.style.backgroundPosition = "-".concat(x, "px -").concat(y, "px");
-  };
-
-  var maskUp = function maskUp() {
-    setMaskSize(Object.assign(maskSize, {
-      dragX: parseInt(maskCom.current.style.left),
-      dragY: parseInt(maskCom.current.style.top)
-    }));
-    document.removeEventListener("mousemove", maskMove);
+    return false;
   };
 
   var maskOut = function maskOut() {
@@ -412,15 +467,16 @@ function Mask(props) {
       left: 'calc(50% - 5px)',
       cursor: 'n-resize'
     }];
+    status.fixed && arr.splice(0, 3) && arr.splice(1, 4);
     return arr.map(function (item, index) {
       return /*#__PURE__*/React.createElement("div", {
         key: index,
         className: "move",
         draggable: "true",
         style: item,
-        onDrag: movehanldeDrag,
         onMouseDown: moveDown,
-        onDragEnd: movehanleDragEnd
+        onMouseUp: moveOut,
+        onMouseOut: moveOut
       });
     });
   };
@@ -434,13 +490,13 @@ function Mask(props) {
       backgroundImage: "url(".concat(canvasImg, ")")
     },
     onMouseDown: maskDown,
-    onMouseUp: maskUp,
+    onMouseUp: maskOut,
     onMouseOut: maskOut
   }, Array(9).fill(0).map(function (_, i) {
     return /*#__PURE__*/React.createElement("span", {
       key: i
     });
-  }), createdMoveList()));
+  }), status.changeSize && createdMoveList()));
 }
 
 var _templateObject;
@@ -450,7 +506,8 @@ var Canvas = function Canvas(props, ref) {
   var size = props.size,
       src = props.src,
       enlarge = props.enlarge,
-      importSize = props.importSize;
+      importSize = props.importSize,
+      status = props.status;
   var canvas;
 
   var _useState = react.useState(''),
@@ -479,32 +536,42 @@ var Canvas = function Canvas(props, ref) {
   });
 
   var init = function init() {
-    var reader = new FileReader();
-    reader.readAsDataURL(src);
+    if (_typeof(src) === 'object') {
+      var reader = new FileReader();
+      reader.readAsDataURL(src);
 
-    reader.onload = function (e) {
-      var img = new Image();
-      img.src = e.target.result;
-
-      img.onload = function () {
-        var _positionImg = positionImg(size, img),
-            x = _positionImg.x,
-            y = _positionImg.y,
-            w = _positionImg.w,
-            h = _positionImg.h;
-
-        canvas = document.querySelector('canvas');
-        canvas.getContext("2d").drawImage(img, x, y, w, h);
-        setSrc(canvas.toDataURL());
-        console.log(importSize); // setMaskSize({ x, y, w, h})
-
-        setMaskSize(positionMask({
-          x: x,
-          y: y,
-          w: w,
-          h: h
-        }, importSize));
+      reader.onload = function (e) {
+        loadImgToCanvas(e.target.result);
       };
+
+      return;
+    }
+
+    loadImgToCanvas(src);
+  };
+
+  var loadImgToCanvas = function loadImgToCanvas(src) {
+    var img = new Image();
+    img.src = src;
+    img.crossOrigin = '*';
+
+    img.onload = function () {
+      var _positionImg = positionImg(size, img),
+          x = _positionImg.x,
+          y = _positionImg.y,
+          w = _positionImg.w,
+          h = _positionImg.h;
+
+      canvas = document.querySelector('canvas');
+      canvas.getContext("2d").drawImage(img, x, y, w, h);
+      setSrc(canvas.toDataURL());
+      console.log(importSize);
+      setMaskSize(positionMask({
+        x: x,
+        y: y,
+        w: w,
+        h: h
+      }, importSize));
     };
   };
 
@@ -520,13 +587,16 @@ var Canvas = function Canvas(props, ref) {
     canvasImg: canvasImg,
     maskSize: maskSize,
     importSize: importSize,
-    setMaskSize: setMaskSize
+    setMaskSize: setMaskSize,
+    status: status
   }));
 };
 
 var CanvasCom = /*#__PURE__*/react.forwardRef(Canvas);
 
 function Cuting(props) {
+  console.log(props.fixed, props);
+
   var _useState = react.useState(''),
       _useState2 = _slicedToArray(_useState, 2),
       src = _useState2[0],
@@ -537,6 +607,11 @@ function Cuting(props) {
       size = _useState4[0],
       setSize = _useState4[1];
 
+  var _useState5 = react.useState(null),
+      _useState6 = _slicedToArray(_useState5, 2),
+      data = _useState6[0],
+      changeData = _useState6[1];
+
   var childRef = react.useRef();
   react.useEffect(function () {
     var container = document.querySelector('.container');
@@ -544,6 +619,7 @@ function Cuting(props) {
       width: parseInt(getComputedStyle(container).width) - 40,
       height: parseInt(getComputedStyle(container).height) - 40
     });
+    initData();
   }, []);
 
   var change = function change(e) {
@@ -559,14 +635,29 @@ function Cuting(props) {
     childRef.current.importImg();
   };
 
+  var initData = function initData() {
+    changeData(verifyData({
+      size: props.size,
+      enlarge: props.enlarge,
+      canMoveBox: props.canMoveBox,
+      info: props.info,
+      fixed: props.fixed,
+      outputType: props.outputType,
+      src: props.src,
+      changeSize: props.changeSize
+    }));
+    props.src && setSrc(props.src);
+  };
+
   return /*#__PURE__*/React.createElement(CutingCom, null, /*#__PURE__*/React.createElement("div", {
     className: "container"
   }, src ? /*#__PURE__*/React.createElement(CanvasCom, {
     size: size,
-    importSize: props.size.split(','),
-    scale: props.scale,
+    importSize: data.size,
+    scale: data.scale,
     src: src,
-    ref: childRef
+    ref: childRef,
+    status: data
   }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
     type: "file",
     onChange: change
