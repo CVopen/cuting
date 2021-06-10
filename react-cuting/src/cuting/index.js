@@ -24,6 +24,10 @@ export default function Cuting(props) {
 
   const change = e => {
     console.log(e.target.files[0]);
+    if (e.target.files[0].size > 1024 * 5) {
+      console.log('太大了')
+      return
+    }
     setSrc(e.target.files[0])
   }
 
@@ -68,9 +72,9 @@ export default function Cuting(props) {
           </>
         }
       </div>
-      <div className="btn" onClick={() => setSrc('')}>清空</div>
+      {/* <div className="btn" onClick={() => setSrc('')}>清空</div>
       <div className="btn" onClick={importImg}>导出</div>
-      <div className="btn" onClick={hanldClick}>触发canvas</div>
+      <div className="btn" onClick={hanldClick}>触发canvas</div> */}
     </CutingCom>
   )
 }

@@ -1,4 +1,5 @@
 import babel from 'rollup-plugin-babel'
+import image from '@rollup/plugin-image'
 
 export default {
   input: './src/index.js',
@@ -6,6 +7,6 @@ export default {
     file: './lib/main.js',
     format: 'cjs'
   },
-  plugins: [babel()],
+  plugins: [babel(), image()],
   external: ['react', 'styled-components']
 }

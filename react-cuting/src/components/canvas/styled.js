@@ -21,6 +21,14 @@ const CanvasCom = styled.div`
     );
   background-size: 16px 16px;
   background-position: 0 0, 8px 8px;
+  img {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `
 export {
   CanvasCom

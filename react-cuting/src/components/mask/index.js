@@ -16,18 +16,38 @@ export default function Mask(props){
   const maskCom = useRef()
   const mask = useRef()
 
-  const [ maskPosition, changePosition ] = useState({x: 0, y: 0})
+  const [ maskPosition ] = useState({x: 0, y: 0})
   const [ cutingSize, changeSize ] = useState([100, 100])
 
   useEffect(() => init(), [props])
 
   const init = () => {
-    importSize && changeSize([importSize[0] * 100 / importSize[1], 100])
-    maskCom.current.style.width = maskSize.dragW + 'px'
-    maskCom.current.style.height = maskSize.dragH + 'px'
+    maskCom.current.style.width = maskSize.dragW.toFixed(2) + 'px'
+    maskCom.current.style.height = maskSize.dragH.toFixed(2) + 'px'
     maskCom.current.style.top = maskSize.dragY + 'px'
     maskCom.current.style.left = maskSize.dragX + 'px'
     maskCom.current.style.backgroundPosition = `-${maskSize.dragX}px -${maskSize.dragY}px`
+    initCutingSize()
+  }
+
+  const initCutingSize = () => {
+    const { dragW, dragH } = maskSize
+    if (importSize) {
+      if (dragW < 100 || dragH < 100) {
+        if (dragW > dragH) {
+          changeSize([(importSize[0] * dragH / importSize[1]), dragH])
+        } else {
+          changeSize([dragW, (importSize[1] * dragW / importSize[0])])
+        }
+        return
+      }
+      changeSize([(importSize[0] * cutingSize[1] / importSize[1]), cutingSize[1]])
+    }
+
+    if (!importSize && (dragW < 100 || dragH < 100)) {
+      const size = dragW > dragH ? dragH : dragW
+      changeSize([size, size])
+    }
   }
 
   const validateW = (dragW) => {
@@ -64,7 +84,6 @@ export default function Mask(props){
   }
 
   const moveDown = e => {
-    console.log('moveDown')
     e.stopPropagation();
     maskPosition.x = e.clientX
     maskPosition.y = e.clientY
@@ -96,6 +115,7 @@ export default function Mask(props){
         dragW = validateW(dragW - (maskPosition.x - e.clientX))
         if (status.fixed) {
           dragH = validateH(cutingSize[1] * dragW / cutingSize[0])
+          dragH === cutingSize[1] && (dragW = cutingSize[0])
         } else {
           dragH = validateH(dragH - (maskPosition.y - e.clientY))
         }
@@ -122,11 +142,13 @@ export default function Mask(props){
     maskCom.current.style.left = dragX + 'px'
     maskCom.current.style.top = dragY + 'px'
     maskCom.current.style.backgroundPosition = `-${dragX}px -${dragY}px`
+    document.querySelector('.info-w').innerHTML = dragW.toFixed(2)
+    document.querySelector('.info-h').innerHTML = dragH.toFixed(2)
     return false
   }
 
   const moveOut = e => {
-    e.stopPropagation();
+    e && e.stopPropagation();
     setMaskSize(Object.assign(maskSize, {
       dragW: parseInt(maskCom.current.style.width),
       dragH: parseInt(maskCom.current.style.height),
@@ -137,7 +159,6 @@ export default function Mask(props){
   }
 
   const maskDown = e => {
-    console.log('maskDown')
     if (!status.canMoveBox) return
     e.stopPropagation();
     maskPosition.x = e.clientX
@@ -181,7 +202,7 @@ export default function Mask(props){
   }
 
   const createdMoveList = () => {
-    const arr = [
+    let arr = [
       {top: '-5px', left: '-5px', cursor: 'nw-resize'},
       {top: '-5px', right: '-5px', cursor: 'ne-resize'},
       {bottom: '-5px', left: '-5px', cursor: 'sw-resize'},
@@ -191,7 +212,7 @@ export default function Mask(props){
       {top: 'calc(50% - 5px)', right: '-5px', cursor: 'w-resize'},
       {bottom: '-5px', left: 'calc(50% - 5px)', cursor: 'n-resize'}
     ]
-    status.fixed && arr.splice(0, 3) && arr.splice(1, 4)
+    status.fixed && (arr = [arr[3]])
     return arr.map((item, index) => 
       <div
         key={index}
@@ -217,6 +238,12 @@ export default function Mask(props){
       >
         { Array(9).fill(0).map((_, i) => <span key={i}></span>) }
         { status.changeSize && createdMoveList() }
+        {
+          status.info && <>
+            <div className="info-w">{ maskSize.dragW.toFixed(2) }</div>
+            <div className="info-h">{ maskSize.dragH.toFixed(2) }</div>
+          </>
+        }
       </div>
     </MaskCom>
   )

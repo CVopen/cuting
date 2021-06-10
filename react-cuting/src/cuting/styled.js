@@ -14,6 +14,8 @@ const CutingCom = styled.div`
   .container {
     width: 100%;
     height: 100%;
+    min-height: 140px;
+    min-width: 140px;
     position: relative;
     display: flex;
     align-items: center;

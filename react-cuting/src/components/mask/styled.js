@@ -7,6 +7,9 @@ const MaskCom = styled.div`
   position: absolute;
   top: 20px;
   left: 20px;
+  div {
+    user-select: none;
+  }
   .mask-img {
     display: flex;
     flex-wrap: wrap;
@@ -24,8 +27,6 @@ const MaskCom = styled.div`
     }
     .move {
       position: absolute;
-      /* bottom: -5px;
-      right: -5px; */
       background-color: #1588f5;
       width: 10px;
       height: 10px;
@@ -55,6 +56,20 @@ const MaskCom = styled.div`
       &:nth-child(7),&:nth-child(8), &:nth-child(9) {
         border-bottom: 1px solid #1588f5;
       }
+    }
+    .info-w {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #1588f5;
+    }
+    .info-h {
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      color: #1588f5;
     }
   }
 `

@@ -26,7 +26,7 @@ export const positionImg = (size, img) => {
 
 /**
  * @param size 图片位置
- * @param importSize 裁切框位置
+ * @param importSize 裁切框大小
  * @returns {
  *  x,  canvas图片偏离左侧
  *  y,  canvas图片偏离顶部
@@ -47,25 +47,21 @@ export const positionMask = (size, importSize) => {
       dragY: size.y
     })
   }
-  if (size.w > importSize[0] || size.h > importSize[1]) {
-    size.dragW = importSize[0]
-    size.dragX = size.x + (size.w - importSize[0]) / 2
-    size.dragH = importSize[1]
-    size.dragY = size.y + (size.h - importSize[1]) / 2
+
+  if (size.w / size.h > importSize[0] / importSize[1]) {
+    size.dragH = size.h > importSize[1] ? importSize[1] : size.h
+    size.dragW = size.dragH * importSize[0] / importSize[1]
+  } else if (size.w / size.h === importSize[0] / importSize[1]) {
+    size.dragW = size.w > importSize[0] ? importSize[0] : size.w
+    size.dragH = size.h > importSize[1] ? importSize[1] : size.h
+  } else {
+    size.dragW = size.w > importSize[0] ? importSize[0] : size.w
+    size.dragH = size.dragW * importSize[1] / importSize[0]
   }
-  if (size.w <= importSize[0]) {
-    size.dragW = size.w
-    size.dragX = size.x
-    size.dragH = importSize[1] * size.w / importSize[0]
-    size.dragY = size.y + (size.h - size.dragH) / 2
-  }
-  if (size.h <= importSize[1]) {
-    size.dragH = size.h
-    size.dragW = size.h * importSize[0] / importSize[1]
-    size.dragX = size.x + (size.w - size.dragW) / 2
-    size.dragY = size.y
-  }
-  size.dragX = parseInt(size.dragX)
-  size.dragY = parseInt(size.dragY)
+  size.dragX = parseInt(size.x + (size.w - size.dragW) / 2)
+  size.dragY = parseInt(size.y + (size.h - size.dragH) / 2)
+  size.dragH = size.dragH > 100 ? parseInt(size.dragH) : 100
+  size.dragW = size.dragW > 100 ? parseInt(size.dragW) : 100
+
   return size
 }
