@@ -2,12 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var react = require('react');
 var React = require('react');
 var styled = require('styled-components');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 
 function _typeof(obj) {
@@ -98,7 +98,7 @@ function _nonIterableRest() {
 }
 
 var _templateObject$2;
-var CutingCom = styled__default['default'].div(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  box-sizing: border-box;\n  padding: 10px;\n  .btn {\n    height: 50px;\n    background-color: red;\n  }\n  .container {\n    width: 100%;\n    height: 100%;\n    min-height: 140px;\n    min-width: 140px;\n    position: relative;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex-direction: column;\n    input {\n      opacity: 0;\n      width: 50%;\n      height: 80%;\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      &:hover ~ span {\n        border-color: red;\n        color: red;\n      }\n    }\n    span {\n      border: 1px dashed #ccc;\n      transition: all .4s;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 50%;\n      height: 80%;\n      font-size: 500%;\n      border-radius: 10px;\n    }\n  }\n"])));
+var CutingCom = styled__default['default'].div(_templateObject$2 || (_templateObject$2 = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 100%;\n  display: flex;\n  flex-direction: column;\n  box-sizing: border-box;\n  padding: 10px;\n  .container {\n    width: 100%;\n    height: 100%;\n    min-height: 140px;\n    min-width: 140px;\n    position: relative;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    flex-direction: column;\n    input {\n      opacity: 0;\n      width: 50%;\n      height: 80%;\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      &:hover ~ span {\n        border-color: red;\n        color: red;\n      }\n    }\n    span {\n      border: 1px dashed #ccc;\n      transition: all .4s;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      width: 50%;\n      height: 80%;\n      font-size: 500%;\n      border-radius: 10px;\n    }\n  }\n"])));
 
 var verifyData = function verifyData(data) {
   if (data.size && !Array.isArray(data.size)) {
@@ -220,7 +220,7 @@ var positionMask = function positionMask(size, importSize) {
 };
 
 var _templateObject$1;
-var MaskCom = styled__default['default'].div(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["\n  width: calc(100% - 40px);\n  height: calc(100% - 40px);\n  background-color: rgba(0, 0, 0, .6);\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  div {\n    user-select: none;\n  }\n  .mask-img {\n    display: flex;\n    flex-wrap: wrap;\n    position: absolute;\n    cursor: move;\n    top: 0;\n    left: 0;\n    &::after {\n      content: \"+\";\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      color: #fff;\n    }\n    .move {\n      position: absolute;\n      background-color: #1588f5;\n      width: 10px;\n      height: 10px;\n      border-radius: 50%;\n    }\n    span {\n      box-sizing: border-box;\n      border-radius: 0;\n      width: 33.33%;\n      display: block;\n      height: 33.33%;\n      &:nth-child(3n+1) {\n        border-left: 1px solid #1588f5;\n        border-right: none;\n      }\n      &:nth-child(3n) {\n        border-right: 1px solid #1588f5;\n        border-left: none;\n      }\n      &:nth-child(1),&:nth-child(2), &:nth-child(3) {\n        border-top: 1px solid #1588f5;\n        border-bottom: none;\n      }\n      &:nth-child(4),&:nth-child(5), &:nth-child(6) {\n        border-bottom: none;\n      }\n      &:nth-child(7),&:nth-child(8), &:nth-child(9) {\n        border-bottom: 1px solid #1588f5;\n      }\n    }\n    .info-w {\n      position: absolute;\n      top: 5px;\n      left: 50%;\n      transform: translateX(-50%);\n      color: #1588f5;\n    }\n    .info-h {\n      position: absolute;\n      top: 50%;\n      left: 5px;\n      transform: translateY(-50%);\n      color: #1588f5;\n    }\n  }\n"])));
+var MaskCom = styled__default['default'].div(_templateObject$1 || (_templateObject$1 = _taggedTemplateLiteral(["\n  width: calc(100% - 40px);\n  height: calc(100% - 40px);\n  background-color: rgba(0, 0, 0, .6);\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  div {\n    user-select: none;\n  }\n  .mask-img {\n    display: flex;\n    flex-wrap: wrap;\n    position: absolute;\n    cursor: move;\n    top: 0;\n    left: 0;\n    &::after {\n      content: \"+\";\n      position: absolute;\n      top: 50%;\n      left: 50%;\n      transform: translate(-50%, -50%);\n      color: #fff;\n    }\n    .move {\n      position: absolute;\n      background-color: #1588f5;\n      width: 18px;\n      height: 18px;\n      border-radius: 50%;\n    }\n    span {\n      box-sizing: border-box;\n      border-radius: 0;\n      width: 33.33%;\n      display: block;\n      height: 33.33%;\n      &:nth-child(3n+1) {\n        border-left: 1px solid #1588f5;\n        border-right: none;\n      }\n      &:nth-child(3n) {\n        border-right: 1px solid #1588f5;\n        border-left: none;\n      }\n      &:nth-child(1),&:nth-child(2), &:nth-child(3) {\n        border-top: 1px solid #1588f5;\n        border-bottom: none;\n      }\n      &:nth-child(4),&:nth-child(5), &:nth-child(6) {\n        border-bottom: none;\n      }\n      &:nth-child(7),&:nth-child(8), &:nth-child(9) {\n        border-bottom: 1px solid #1588f5;\n      }\n    }\n    .info-w {\n      position: absolute;\n      top: 5px;\n      left: 50%;\n      transform: translateX(-50%);\n      color: #1588f5;\n    }\n    .info-h {\n      position: absolute;\n      top: 50%;\n      left: 5px;\n      transform: translateY(-50%);\n      color: #1588f5;\n    }\n  }\n"])));
 
 function Mask(props) {
   var maskSize = props.maskSize,
@@ -228,22 +228,22 @@ function Mask(props) {
       setMaskSize = props.setMaskSize,
       importSize = props.importSize,
       status = props.status;
-  var maskCom = react.useRef();
-  var mask = react.useRef();
+  var maskCom = React.useRef();
+  var mask = React.useRef();
 
-  var _useState = react.useState({
+  var _useState = React.useState({
     x: 0,
     y: 0
   }),
       _useState2 = _slicedToArray(_useState, 1),
       maskPosition = _useState2[0];
 
-  var _useState3 = react.useState([100, 100]),
+  var _useState3 = React.useState([80, 80]),
       _useState4 = _slicedToArray(_useState3, 2),
       cutingSize = _useState4[0],
       changeSize = _useState4[1];
 
-  react.useEffect(function () {
+  React.useEffect(function () {
     return init();
   }, [props]);
 
@@ -261,7 +261,7 @@ function Mask(props) {
         dragH = maskSize.dragH;
 
     if (importSize) {
-      if (dragW < 100 || dragH < 100) {
+      if (dragW < 80 || dragH < 80) {
         if (dragW > dragH) {
           changeSize([importSize[0] * dragH / importSize[1], dragH]);
         } else {
@@ -274,7 +274,7 @@ function Mask(props) {
       changeSize([importSize[0] * cutingSize[1] / importSize[1], cutingSize[1]]);
     }
 
-    if (!importSize && (dragW < 100 || dragH < 100)) {
+    if (!importSize && (dragW < 80 || dragH < 80)) {
       var size = dragW > dragH ? dragH : dragW;
       changeSize([size, size]);
     }
@@ -456,41 +456,41 @@ function Mask(props) {
 
   var createdMoveList = function createdMoveList() {
     var arr = [{
-      top: '-5px',
-      left: '-5px',
+      top: '-9px',
+      left: '-9px',
       cursor: 'nw-resize'
     }, {
-      top: '-5px',
-      right: '-5px',
+      top: '-9px',
+      right: '-9px',
       cursor: 'ne-resize'
     }, {
-      bottom: '-5px',
-      left: '-5px',
+      bottom: '-9px',
+      left: '-9px',
       cursor: 'sw-resize'
     }, {
-      bottom: '-5px',
-      right: '-5px',
+      bottom: '-9px',
+      right: '-9px',
       cursor: 'se-resize'
     }, {
-      top: '-5px',
-      left: 'calc(50% - 5px)',
+      top: '-9px',
+      left: 'calc(50% - 9px)',
       cursor: 's-resize'
     }, {
-      top: 'calc(50% - 5px)',
-      left: '-5px',
+      top: 'calc(50% - 9px)',
+      left: '-9px',
       cursor: 'e-resize'
     }, {
-      top: 'calc(50% - 5px)',
-      right: '-5px',
+      top: 'calc(50% - 9px)',
+      right: '-9px',
       cursor: 'w-resize'
     }, {
-      bottom: '-5px',
-      left: 'calc(50% - 5px)',
+      bottom: '-9px',
+      left: 'calc(50% - 9px)',
       cursor: 'n-resize'
     }];
     status.fixed && (arr = [arr[3]]);
     return arr.map(function (item, index) {
-      return /*#__PURE__*/React.createElement("div", {
+      return /*#__PURE__*/React__default['default'].createElement("div", {
         key: index,
         className: "move",
         draggable: "true",
@@ -502,9 +502,9 @@ function Mask(props) {
     });
   };
 
-  return /*#__PURE__*/React.createElement(MaskCom, {
+  return /*#__PURE__*/React__default['default'].createElement(MaskCom, {
     ref: mask
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "mask-img",
     ref: maskCom,
     style: {
@@ -514,12 +514,12 @@ function Mask(props) {
     onMouseUp: maskOut,
     onMouseOut: maskOut
   }, Array(9).fill(0).map(function (_, i) {
-    return /*#__PURE__*/React.createElement("span", {
+    return /*#__PURE__*/React__default['default'].createElement("span", {
       key: i
     });
-  }), status.changeSize && createdMoveList(), status.info && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }), status.changeSize && createdMoveList(), status.info && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "info-w"
-  }, maskSize.dragW.toFixed(2)), /*#__PURE__*/React.createElement("div", {
+  }, maskSize.dragW.toFixed(2)), /*#__PURE__*/React__default['default'].createElement("div", {
     className: "info-h"
   }, maskSize.dragH.toFixed(2)))));
 }
@@ -535,38 +535,84 @@ var Canvas = function Canvas(props, ref) {
       importSize = props.importSize,
       status = props.status;
 
-  var _useState = react.useState(''),
+  var _useState = React.useState(''),
       _useState2 = _slicedToArray(_useState, 2),
       canvasImg = _useState2[0],
       setSrc = _useState2[1];
 
-  var _useState3 = react.useState({}),
+  var _useState3 = React.useState({}),
       _useState4 = _slicedToArray(_useState3, 2),
       maskSize = _useState4[0],
       setMaskSize = _useState4[1];
 
-  react.useEffect(function () {
+  React.useEffect(function () {
     return init();
   }, []);
-  react.useImperativeHandle(ref, function () {
+  React.useImperativeHandle(ref, function () {
     return {
       importImg: function importImg() {
-        var newCanvas = document.createElement('canvas');
-        newCanvas.width = maskSize.dragW * status.enlarge;
-        newCanvas.height = maskSize.dragH * status.enlarge;
-        loadImgToCanvas(canvasImg, importCb(newCanvas));
+        return importType('img');
+      },
+      importBase: function importBase(callback) {
+        return importType('base64', callback);
+      },
+      importBlob: function importBlob(callback) {
+        return importType('blob', callback);
       }
     };
   });
 
-  var importCb = function importCb(newCanvas) {
+  var importType = function importType(type, callback) {
+    var newCanvas = document.createElement('canvas');
+    newCanvas.width = maskSize.dragW * status.enlarge;
+    newCanvas.height = maskSize.dragH * status.enlarge;
+    loadImgToCanvas(src, importCb(newCanvas, type, callback));
+  };
+
+  var importCb = function importCb(newCanvas, type, callback) {
     return function (img) {
-      newCanvas.getContext("2d").drawImage(img, maskSize.dragX, maskSize.dragY, maskSize.dragW, maskSize.dragH, 0, 0, newCanvas.width, newCanvas.height);
-      var a = document.createElement("a");
-      a.href = newCanvas.toDataURL();
-      a.download = '123.png';
-      a.click();
+      var context = newCanvas.getContext("2d");
+      context.drawImage(img, maskSize.dragX, maskSize.dragY, maskSize.dragW, maskSize.dragH, 0, 0, newCanvas.width, newCanvas.height);
+      context.mozImageSmoothingEnabled = false;
+      context.webkitImageSmoothingEnabled = false;
+      context.msImageSmoothingEnabled = false;
+      context.imageSmoothingEnabled = false;
+
+      switch (type) {
+        case 'img':
+          var a = document.createElement("a");
+          a.href = newCanvas.toDataURL('image/' + status.outputType, status.outputSize);
+          a.download = 'cuting';
+          a.click();
+          return;
+
+        case 'base64':
+          callback(newCanvas.toDataURL());
+          return;
+
+        case 'blob':
+          callback(dataURItoBlob(newCanvas.toDataURL()));
+          return;
+      }
     };
+  };
+
+  var dataURItoBlob = function dataURItoBlob(dataURI) {
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]; // mime类型
+
+    var byteString = atob(dataURI.split(',')[1]); //base64 解码
+
+    var arrayBuffer = new ArrayBuffer(byteString.length); //创建缓冲数组
+
+    var intArray = new Uint8Array(arrayBuffer); //创建视图
+
+    for (var i = 0; i < byteString.length; i++) {
+      intArray[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([intArray], {
+      type: mimeString
+    });
   };
 
   var init = function init() {
@@ -577,8 +623,6 @@ var Canvas = function Canvas(props, ref) {
       reader.onload = function (e) {
         loadImgToCanvas(e.target.result, initCanvasSize);
       };
-
-      return;
     }
 
     loadImgToCanvas(src, initCanvasSize);
@@ -590,9 +634,10 @@ var Canvas = function Canvas(props, ref) {
     img.crossOrigin = '*';
 
     img.onload = function () {
-      return cb(img);
+      cb(img);
     };
-  };
+  }; // 初始化图片
+
 
   var initCanvasSize = function initCanvasSize(img) {
     var _positionImg = positionImg(size, img),
@@ -603,7 +648,7 @@ var Canvas = function Canvas(props, ref) {
 
     var canvas = document.querySelector('canvas');
     canvas.getContext("2d").drawImage(img, x, y, w, h);
-    console.log('OK了');
+    props.onChange('success');
     setSrc(canvas.toDataURL());
     setMaskSize(positionMask({
       x: x,
@@ -613,45 +658,45 @@ var Canvas = function Canvas(props, ref) {
     }, importSize));
   };
 
-  return /*#__PURE__*/React.createElement(CanvasCom$1, {
+  return /*#__PURE__*/React__default['default'].createElement(CanvasCom$1, {
     style: {
       width: size.width + 'px',
       height: size.height + 'px'
     }
-  }, /*#__PURE__*/React.createElement("canvas", {
+  }, /*#__PURE__*/React__default['default'].createElement("canvas", {
     width: size.width,
     height: size.height
-  }), Object.getOwnPropertyNames(maskSize).length ? /*#__PURE__*/React.createElement(Mask, {
+  }), Object.getOwnPropertyNames(maskSize).length ? /*#__PURE__*/React__default['default'].createElement(Mask, {
     canvasImg: canvasImg,
     maskSize: maskSize,
     importSize: importSize,
     setMaskSize: setMaskSize,
     status: status
-  }) : /*#__PURE__*/React.createElement("img", {
+  }) : /*#__PURE__*/React__default['default'].createElement("img", {
     src: img
   }));
 };
 
-var CanvasCom = /*#__PURE__*/react.forwardRef(Canvas);
+var CanvasCom = /*#__PURE__*/React.forwardRef(Canvas);
 
-function Cuting(props) {
-  var _useState = react.useState(''),
+var Cuting = function Cuting(props, ref) {
+  var _useState = React.useState(''),
       _useState2 = _slicedToArray(_useState, 2),
       src = _useState2[0],
       setSrc = _useState2[1];
 
-  var _useState3 = react.useState(null),
+  var _useState3 = React.useState(null),
       _useState4 = _slicedToArray(_useState3, 2),
       size = _useState4[0],
       setSize = _useState4[1];
 
-  var _useState5 = react.useState(null),
+  var _useState5 = React.useState(null),
       _useState6 = _slicedToArray(_useState5, 2),
       data = _useState6[0],
       changeData = _useState6[1];
 
-  var childRef = react.useRef();
-  react.useEffect(function () {
+  var childRef = React.useRef();
+  React.useEffect(function () {
     var container = document.querySelector('.container');
     setSize({
       width: parseInt(getComputedStyle(container).width) - 40,
@@ -659,12 +704,24 @@ function Cuting(props) {
     });
     initData();
   }, [props]);
+  React.useImperativeHandle(ref, function () {
+    return {
+      "import": function _import() {
+        childRef.current.importImg();
+      },
+      clear: setSrc,
+      getBase: function getBase(callback) {
+        return childRef.current.importBase(callback);
+      },
+      getBlob: function getBlob(callback) {
+        return childRef.current.importBlob(callback);
+      }
+    };
+  });
 
   var change = function change(e) {
-    console.log(e.target.files[0]);
-
-    if (e.target.files[0].size > 1024 * 5) {
-      console.log('太大了');
+    if (e.target.files[0].size > (1 << 20) * 5) {
+      props.onChange('error');
       return;
     }
 
@@ -685,19 +742,22 @@ function Cuting(props) {
     props.src && setSrc(props.src);
   };
 
-  return /*#__PURE__*/React.createElement(CutingCom, null, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React__default['default'].createElement(CutingCom, null, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "container"
-  }, src ? /*#__PURE__*/React.createElement(CanvasCom, {
+  }, src ? /*#__PURE__*/React__default['default'].createElement(CanvasCom, {
     size: size,
     importSize: data.size,
     scale: data.scale,
     src: src,
     ref: childRef,
-    status: data
-  }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
+    status: data,
+    onChange: props.onChange
+  }) : /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("input", {
     type: "file",
     onChange: change
-  }), /*#__PURE__*/React.createElement("span", null, "+"))));
-}
+  }), /*#__PURE__*/React__default['default'].createElement("span", null, "+"))));
+};
 
-exports.Cuting = Cuting;
+var index = /*#__PURE__*/React.forwardRef(Cuting);
+
+exports.Cuting = index;

@@ -28,8 +28,8 @@ const MaskCom = styled.div`
     .move {
       position: absolute;
       background-color: #1588f5;
-      width: 10px;
-      height: 10px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
     }
     span {

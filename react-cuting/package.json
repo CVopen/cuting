@@ -1,6 +1,6 @@
 {
   "name": "react-cuting",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "lib/main.js",
   "author": "Open <1123038371@qq.com> (https://github.com/CVopen)",
   "license": "MIT",
@@ -8,6 +8,15 @@
     "build": "yarn run rollup -c",
     "start": "yarn run rollup -c -w"
   },
+  "description": "一个简单易用的React图片裁切插件",
+  "keywords": [
+    "react",
+    "cuting",
+    "react-cuting",
+    "react-component",
+    "裁切",
+    "图片"
+  ],
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",

@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { 
+import React, { 
   useEffect, 
   useState, 
-  useRef 
+  useRef,
+  useImperativeHandle, 
+  forwardRef 
 } from 'react'
 import { CutingCom } from './styled'
 import { verifyData } from '../utils/verify'
 import CanvasCom from '../components/canvas/index'
 
-export default function Cuting(props) { 
+const Cuting = (props, ref) => { 
   const [ src, setSrc ] = useState('')
   const [ size, setSize ] = useState(null)
   const [ data, changeData ] = useState(null)
@@ -22,23 +24,23 @@ export default function Cuting(props) {
     initData()
   }, [props])
 
+  useImperativeHandle(ref, () => ({
+    import: () => {
+      childRef.current.importImg()
+    },
+    clear: setSrc,
+    getBase: (callback) => childRef.current.importBase(callback),
+    getBlob: (callback) => childRef.current.importBlob(callback)
+  }));
+
   const change = e => {
-    console.log(e.target.files[0]);
-    if (e.target.files[0].size > 1024 * 5) {
-      console.log('太大了')
+    if (e.target.files[0].size > (1 << 20) * 5) {
+      props.onChange('error')
       return
     }
     setSrc(e.target.files[0])
   }
-
-  const importImg = () => {
-    console.log('cuting')
-  }
-
-  const hanldClick = () => {
-    childRef.current.importImg()
-  }
-
+  
   const initData = () => {
     changeData(verifyData({
       size: props.size,
@@ -65,6 +67,7 @@ export default function Cuting(props) {
             src={src}
             ref={childRef}
             status={data}
+            onChange={props.onChange}
           /> :
           <>
             <input type="file" onChange={change} />
@@ -72,9 +75,8 @@ export default function Cuting(props) {
           </>
         }
       </div>
-      {/* <div className="btn" onClick={() => setSrc('')}>清空</div>
-      <div className="btn" onClick={importImg}>导出</div>
-      <div className="btn" onClick={hanldClick}>触发canvas</div> */}
     </CutingCom>
   )
 }
+
+export default forwardRef(Cuting)

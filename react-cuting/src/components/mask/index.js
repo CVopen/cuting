@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { 
+import React, { 
   useState, 
   useRef,
   useEffect
@@ -10,14 +10,14 @@ export default function Mask(props){
     maskSize, // 遮罩尺寸
     canvasImg, // 图片src
     setMaskSize,
-    importSize, // 裁切框最小尺寸 比例默认 1：1 100 * 100
+    importSize, // 裁切框最小尺寸 比例默认 1：1 80 * 80
     status // 传入的状态
   } = props
   const maskCom = useRef()
   const mask = useRef()
 
   const [ maskPosition ] = useState({x: 0, y: 0})
-  const [ cutingSize, changeSize ] = useState([100, 100])
+  const [ cutingSize, changeSize ] = useState([80, 80])
 
   useEffect(() => init(), [props])
 
@@ -33,7 +33,7 @@ export default function Mask(props){
   const initCutingSize = () => {
     const { dragW, dragH } = maskSize
     if (importSize) {
-      if (dragW < 100 || dragH < 100) {
+      if (dragW < 80 || dragH < 80) {
         if (dragW > dragH) {
           changeSize([(importSize[0] * dragH / importSize[1]), dragH])
         } else {
@@ -44,7 +44,7 @@ export default function Mask(props){
       changeSize([(importSize[0] * cutingSize[1] / importSize[1]), cutingSize[1]])
     }
 
-    if (!importSize && (dragW < 100 || dragH < 100)) {
+    if (!importSize && (dragW < 80 || dragH < 80)) {
       const size = dragW > dragH ? dragH : dragW
       changeSize([size, size])
     }
@@ -203,14 +203,14 @@ export default function Mask(props){
 
   const createdMoveList = () => {
     let arr = [
-      {top: '-5px', left: '-5px', cursor: 'nw-resize'},
-      {top: '-5px', right: '-5px', cursor: 'ne-resize'},
-      {bottom: '-5px', left: '-5px', cursor: 'sw-resize'},
-      {bottom: '-5px', right: '-5px', cursor: 'se-resize'},
-      {top: '-5px', left: 'calc(50% - 5px)', cursor: 's-resize'},
-      {top: 'calc(50% - 5px)', left: '-5px', cursor: 'e-resize'},
-      {top: 'calc(50% - 5px)', right: '-5px', cursor: 'w-resize'},
-      {bottom: '-5px', left: 'calc(50% - 5px)', cursor: 'n-resize'}
+      {top: '-9px', left: '-9px', cursor: 'nw-resize'},
+      {top: '-9px', right: '-9px', cursor: 'ne-resize'},
+      {bottom: '-9px', left: '-9px', cursor: 'sw-resize'},
+      {bottom: '-9px', right: '-9px', cursor: 'se-resize'},
+      {top: '-9px', left: 'calc(50% - 9px)', cursor: 's-resize'},
+      {top: 'calc(50% - 9px)', left: '-9px', cursor: 'e-resize'},
+      {top: 'calc(50% - 9px)', right: '-9px', cursor: 'w-resize'},
+      {bottom: '-9px', left: 'calc(50% - 9px)', cursor: 'n-resize'}
     ]
     status.fixed && (arr = [arr[3]])
     return arr.map((item, index) => 
